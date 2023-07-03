@@ -10,7 +10,6 @@ import 'main.dart';
 import 'models/model_retro_emoji.dart';
 
 // TODO Features needed
-// Auto close when application loses focus
 // Add normal emojis
 // Add Gifs !
 // Add ascii texts images or something

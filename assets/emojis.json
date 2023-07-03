@@ -1,0 +1,1416 @@
+{
+    "retro_emojis" : 
+    [
+        {
+            "phrase": "⊂(◉‿◉)つ",
+            "shortcut": "acid"
+        },
+        {
+            "phrase": "(ㆆ _ ㆆ)",
+            "shortcut": "afraid"
+        },
+        {
+            "phrase": "α",
+            "shortcut": "alpha"
+        },
+        {
+            "phrase": "☜(⌒▽⌒)☞",
+            "shortcut": "angel"
+        },
+        {
+            "phrase": "•`_´•",
+            "shortcut": "angry"
+        },
+        {
+            "phrase": "⤜(ⱺ ʖ̯ⱺ)⤏",
+            "shortcut": "arrowhead"
+        },
+        {
+            "phrase": "",
+            "shortcut": "apple"
+        },
+        {
+            "phrase": "(‿|‿)",
+            "shortcut": "ass"
+        },
+        {
+            "phrase": "(‿|‿)",
+            "shortcut": "butt"
+        },
+        {
+            "phrase": "•͡˘㇁•͡˘",
+            "shortcut": "awkward"
+        },
+        {
+            "phrase": "/|\\ ^._.^ /|\\",
+            "shortcut": "bat"
+        },
+        {
+            "phrase": "ʕ·͡ᴥ·ʔ﻿",
+            "shortcut": "bear"
+        },
+        {
+            "phrase": "ʕ·͡ᴥ·ʔ﻿",
+            "shortcut": "koala"
+        },
+        {
+            "phrase": "ʕノ•ᴥ•ʔノ ︵ ┻━┻",
+            "shortcut": "bearflip"
+        },
+        {
+            "phrase": "ʕっ•ᴥ•ʔっ",
+            "shortcut": "bearhug"
+        },
+        {
+            "phrase": "∵",
+            "shortcut": "because"
+        },
+        {
+            "phrase": "∵",
+            "shortcut": "since"
+        },
+        {
+            "phrase": "β",
+            "shortcut": "beta"
+        },
+        {
+            "phrase": "❤",
+            "shortcut": "bigheart"
+        },
+        {
+            "phrase": "0__#",
+            "shortcut": "blackeye"
+        },
+        {
+            "phrase": "(      0    _   0    )",
+            "shortcut": "blubby"
+        },
+        {
+            "phrase": "(˵ ͡° ͜ʖ ͡°˵)",
+            "shortcut": "blush"
+        },
+        {
+            "phrase": "┌( ͝° ͜ʖ͡°)=ε/̵͇̿̿/’̿’̿ ̿",
+            "shortcut": "bond"
+        },
+        {
+            "phrase": "┌( ͝° ͜ʖ͡°)=ε/̵͇̿̿/’̿’̿ ̿",
+            "shortcut": "007"
+        },
+        {
+            "phrase": "( . Y . )",
+            "shortcut": "boobs"
+        },
+        {
+            "phrase": "(-_-)",
+            "shortcut": "bored"
+        },
+        {
+            "phrase": "( •͡˘ _•͡˘)ノð",
+            "shortcut": "bribe"
+        },
+        {
+            "phrase": "( ˘ ³˘)ノ°ﾟº❍｡",
+            "shortcut": "bubbles"
+        },
+        {
+            "phrase": "ƸӜƷ",
+            "shortcut": "butterfly"
+        },
+        {
+            "phrase": "(= ФェФ=)",
+            "shortcut": "cat"
+        },
+        {
+            "phrase": "( ͡° ᴥ ͡°)﻿",
+            "shortcut": "catlenny"
+        },
+        {
+            "phrase": "✔",
+            "shortcut": "check"
+        },
+        {
+            "phrase": "※\\(^o^)/※",
+            "shortcut": "cheer"
+        },
+        {
+            "phrase": "╭(ʘ̆~◞౪◟~ʘ̆)╮",
+            "shortcut": "chubby"
+        },
+        {
+            "phrase": "(͡ ° ͜ʖ ͡ °)",
+            "shortcut": "claro"
+        },
+        {
+            "phrase": "ヽ༼ ຈل͜ຈ༼ ▀̿̿Ĺ̯̿̿▀̿ ̿༽Ɵ͆ل͜Ɵ͆ ༽ﾉ",
+            "shortcut": "clique"
+        },
+        {
+            "phrase": "ヽ༼ ຈل͜ຈ༼ ▀̿̿Ĺ̯̿̿▀̿ ̿༽Ɵ͆ل͜Ɵ͆ ༽ﾉ",
+            "shortcut": "gang"
+        },
+        {
+            "phrase": "ヽ༼ ຈل͜ຈ༼ ▀̿̿Ĺ̯̿̿▀̿ ̿༽Ɵ͆ل͜Ɵ͆ ༽ﾉ",
+            "shortcut": "squad"
+        },
+        {
+            "phrase": "☁",
+            "shortcut": "cloud"
+        },
+        {
+            "phrase": "♣",
+            "shortcut": "club"
+        },
+        {
+            "phrase": "c[_]",
+            "shortcut": "coffee"
+        },
+        {
+            "phrase": "c[_]",
+            "shortcut": "cuppa"
+        },
+        {
+            "phrase": "⌘",
+            "shortcut": "cmd"
+        },
+        {
+            "phrase": "⌘",
+            "shortcut": "command"
+        },
+        {
+            "phrase": "(•_•) ( •_•)>⌐■-■ (⌐■_■)",
+            "shortcut": "cool"
+        },
+        {
+            "phrase": "(•_•) ( •_•)>⌐■-■ (⌐■_■)",
+            "shortcut": "csi"
+        },
+        {
+            "phrase": "©",
+            "shortcut": "copy"
+        },
+        {
+            "phrase": "©",
+            "shortcut": "c"
+        },
+        {
+            "phrase": "ԅ(≖‿≖ԅ)",
+            "shortcut": "creep"
+        },
+        {
+            "phrase": "ƪ(ړײ)‎ƪ​​",
+            "shortcut": "creepcute"
+        },
+        {
+            "phrase": "( ✜︵✜ )",
+            "shortcut": "crim3s"
+        },
+        {
+            "phrase": "†",
+            "shortcut": "cross"
+        },
+        {
+            "phrase": "(╥﹏╥)",
+            "shortcut": "cry"
+        },
+        {
+            "phrase": "( ╥﹏╥) ノシ",
+            "shortcut": "crywave"
+        },
+        {
+            "phrase": "(｡◕‿‿◕｡)",
+            "shortcut": "cute"
+        },
+        {
+            "phrase": "⚀",
+            "shortcut": "d1"
+        },
+        {
+            "phrase": "⚁",
+            "shortcut": "d2"
+        },
+        {
+            "phrase": "⚂",
+            "shortcut": "d3"
+        },
+        {
+            "phrase": "⚃",
+            "shortcut": "d4"
+        },
+        {
+            "phrase": "⚄",
+            "shortcut": "d5"
+        },
+        {
+            "phrase": "⚅",
+            "shortcut": "d6"
+        },
+        {
+            "phrase": "ヽ( •_)ᕗ",
+            "shortcut": "dab"
+        },
+        {
+            "phrase": "(ᕗ ͠° ਊ ͠° )ᕗ",
+            "shortcut": "damnyou"
+        },
+        {
+            "phrase": "ᕕ(⌐■_■)ᕗ ♪♬",
+            "shortcut": "dance"
+        },
+        {
+            "phrase": "x⸑x",
+            "shortcut": "dead"
+        },
+        {
+            "phrase": "(⌐■_■)",
+            "shortcut": "dealwithit"
+        },
+        {
+            "phrase": "(⌐■_■)",
+            "shortcut": "dwi"
+        },
+        {
+            "phrase": "Δ",
+            "shortcut": "delta"
+        },
+        {
+            "phrase": "(︶︹︶)",
+            "shortcut": "depressed"
+        },
+        {
+            "phrase": "☉ ‿ ⚆",
+            "shortcut": "derp"
+        },
+        {
+            "phrase": "♦",
+            "shortcut": "diamond"
+        },
+        {
+            "phrase": "d[-_-]b",
+            "shortcut": "dj"
+        },
+        {
+            "phrase": "(◕ᴥ◕ʋ)",
+            "shortcut": "dog"
+        },
+        {
+            "phrase": "$",
+            "shortcut": "dollar"
+        },
+        {
+            "phrase": "(̿▀̿ ̿Ĺ̯̿̿▀̿ ̿)̄",
+            "shortcut": "dong"
+        },
+        {
+            "phrase": "ヽ༼ຈل͜ຈ༽ﾉ",
+            "shortcut": "donger"
+        },
+        {
+            "phrase": "(- ʖ̯-)",
+            "shortcut": "dontcare"
+        },
+        {
+            "phrase": "(- ʖ̯-)",
+            "shortcut": "idc"
+        },
+        {
+            "phrase": "ヽ(｀Д´)ﾉ",
+            "shortcut": "do not want"
+        },
+        {
+            "phrase": "ヽ(｀Д´)ﾉ",
+            "shortcut": "dontwant"
+        },
+        {
+            "phrase": "<(^_^)>",
+            "shortcut": "dope"
+        },
+        {
+            "phrase": "«",
+            "shortcut": "<<"
+        },
+        {
+            "phrase": "»",
+            "shortcut": ">>"
+        },
+        {
+            "phrase": "𝄫",
+            "shortcut": "doubleflat"
+        },
+        {
+            "phrase": "𝄪",
+            "shortcut": "doublesharp"
+        },
+        {
+            "phrase": "┻━┻ ︵ヽ(`Д´)ﾉ︵ ┻━┻",
+            "shortcut": "doubletableflip"
+        },
+        {
+            "phrase": "↓",
+            "shortcut": "down"
+        },
+        {
+            "phrase": "(・3・)",
+            "shortcut": "duckface"
+        },
+        {
+            "phrase": "ᕕ(╭ರ╭ ͟ʖ╮•́)⊃¤=(————-",
+            "shortcut": "duel"
+        },
+        {
+            "phrase": "(≧︿≦)",
+            "shortcut": "duh"
+        },
+        {
+            "phrase": "¯\\(°_o)/¯",
+            "shortcut": "dunno"
+        },
+        {
+            "phrase": "ᴇʙᴏʟᴀ",
+            "shortcut": "ebola"
+        },
+        {
+            "phrase": "(-(-_-(-_(-_(-_-)_-)-_-)_-)_-)-)",
+            "shortcut": "eeriemob"
+        },
+        {
+            "phrase": "…",
+            "shortcut": "ellipsis"
+        },
+        {
+            "phrase": "…",
+            "shortcut": "..."
+        },
+        {
+            "phrase": "–",
+            "shortcut": "emdash"
+        },
+        {
+            "phrase": "–",
+            "shortcut": "--"
+        },
+        {
+            "phrase": "☆",
+            "shortcut": "emptystar"
+        },
+        {
+            "phrase": "△",
+            "shortcut": "emptytriangle"
+        },
+        {
+            "phrase": "△",
+            "shortcut": "t2"
+        },
+        {
+            "phrase": "(҂◡_◡) ᕤ",
+            "shortcut": "endure"
+        },
+        {
+            "phrase": "✉︎",
+            "shortcut": "envelope"
+        },
+        {
+            "phrase": "✉︎",
+            "shortcut": "letter"
+        },
+        {
+            "phrase": "ɛ",
+            "shortcut": "epsilon"
+        },
+        {
+            "phrase": "€",
+            "shortcut": "euro"
+        },
+        {
+            "phrase": "ψ(｀∇´)ψ",
+            "shortcut": "evil"
+        },
+        {
+            "phrase": "(͠≖ ͜ʖ͠≖)",
+            "shortcut": "evillenny"
+        },
+        {
+            "phrase": "(ﾉ◕ヮ◕)ﾉ*:・ﾟ✧",
+            "shortcut": "excited"
+        },
+        {
+            "phrase": "(⌐■_■)︻╦╤─   (╥﹏╥)",
+            "shortcut": "execution"
+        },
+        {
+            "phrase": "(╯°□°)╯︵ ʞooqǝɔɐɟ",
+            "shortcut": "facebook"
+        },
+        {
+            "phrase": "(－‸ლ)",
+            "shortcut": "facepalm"
+        },
+        {
+            "phrase": "(ˆ⺫ˆ๑)<3",
+            "shortcut": "fart"
+        },
+        {
+            "phrase": "(ง •̀_•́)ง",
+            "shortcut": "fight"
+        },
+        {
+            "phrase": "| (• ◡•)|",
+            "shortcut": "finn"
+        },
+        {
+            "phrase": "<\"(((<3",
+            "shortcut": "fish"
+        },
+        {
+            "phrase": "卌",
+            "shortcut": "5"
+        },
+        {
+            "phrase": "卌",
+            "shortcut": "five"
+        },
+        {
+            "phrase": "⅝",
+            "shortcut": "5/8"
+        },
+        {
+            "phrase": "♭",
+            "shortcut": "flat"
+        },
+        {
+            "phrase": "♭",
+            "shortcut": "bemolle"
+        },
+        {
+            "phrase": "ᕙ(`▽´)ᕗ",
+            "shortcut": "flexing"
+        },
+        {
+            "phrase": "┬─┬﻿ ︵ /(.□. \\）",
+            "shortcut": "flipped"
+        },
+        {
+            "phrase": "┬─┬﻿ ︵ /(.□. \\）",
+            "shortcut": "heavytable"
+        },
+        {
+            "phrase": "(✿◠‿◠)",
+            "shortcut": "flower"
+        },
+        {
+            "phrase": "(✿◠‿◠)",
+            "shortcut": "flor"
+        },
+        {
+            "phrase": "✿",
+            "shortcut": "f"
+        },
+        {
+            "phrase": "─=≡Σ((( つ◕ل͜◕)つ",
+            "shortcut": "fly"
+        },
+        {
+            "phrase": "(╯°□°)╯︵ ┻━┻ ︵ ╯(°□° ╯)",
+            "shortcut": "friendflip"
+        },
+        {
+            "phrase": "(ღ˘⌣˘ღ)",
+            "shortcut": "frown"
+        },
+        {
+            "phrase": "୧༼ಠ益ಠ╭∩╮༽",
+            "shortcut": "fuckoff"
+        },
+        {
+            "phrase": "୧༼ಠ益ಠ╭∩╮༽",
+            "shortcut": "gtfo"
+        },
+        {
+            "phrase": "┌П┐(ಠ_ಠ)",
+            "shortcut": "fuckyou"
+        },
+        {
+            "phrase": "┌П┐(ಠ_ಠ)",
+            "shortcut": "fu"
+        },
+        {
+            "phrase": "ಠ_ರೃ",
+            "shortcut": "gentleman"
+        },
+        {
+            "phrase": "ಠ_ರೃ",
+            "shortcut": "sir"
+        },
+        {
+            "phrase": "ಠ_ರೃ",
+            "shortcut": "monocle"
+        },
+        {
+            "phrase": "= _ =",
+            "shortcut": "ghast"
+        },
+        {
+            "phrase": "༼ つ ╹ ╹ ༽つ",
+            "shortcut": "ghost"
+        },
+        {
+            "phrase": "(´・ω・)っ由",
+            "shortcut": "gift"
+        },
+        {
+            "phrase": "(´・ω・)っ由",
+            "shortcut": "present"
+        },
+        {
+            "phrase": "༼ つ ◕_◕ ༽つ",
+            "shortcut": "gimme"
+        },
+        {
+            "phrase": "(•-•)⌐",
+            "shortcut": "givemeyourmoney"
+        },
+        {
+            "phrase": "(*・‿・)ノ⌒*:･ﾟ✧",
+            "shortcut": "glitter"
+        },
+        {
+            "phrase": "(⌐ ͡■ ͜ʖ ͡■)",
+            "shortcut": "glasses"
+        },
+        {
+            "phrase": "( ͡° ͜ʖ ͡°)ﾉ⌐■-■",
+            "shortcut": "glassesoff"
+        },
+        {
+            "phrase": "(ﾉ☉ヮ⚆)ﾉ ⌒*:･ﾟ✧",
+            "shortcut": "glitterderp"
+        },
+        {
+            "phrase": "(_゜_゜_)",
+            "shortcut": "gloomy"
+        },
+        {
+            "phrase": "(з๏ε)",
+            "shortcut": "goatse"
+        },
+        {
+            "phrase": "(☞ﾟ∀ﾟ)☞",
+            "shortcut": "gotit"
+        },
+        {
+            "phrase": "( ´◔ ω◔`) ノシ",
+            "shortcut": "greet"
+        },
+        {
+            "phrase": "( ´◔ ω◔`) ノシ",
+            "shortcut": "greetings"
+        },
+        {
+            "phrase": "︻╦╤─",
+            "shortcut": "gun"
+        },
+        {
+            "phrase": "︻╦╤─",
+            "shortcut": "mg"
+        },
+        {
+            "phrase": "༼つಠ益ಠ༽つ ─=≡ΣO))",
+            "shortcut": "hadouken"
+        },
+        {
+            "phrase": "☭",
+            "shortcut": "hammerandsickle"
+        },
+        {
+            "phrase": "☭",
+            "shortcut": "hs"
+        },
+        {
+            "phrase": "☜",
+            "shortcut": "handleft"
+        },
+        {
+            "phrase": "☜",
+            "shortcut": "hl"
+        },
+        {
+            "phrase": "☞",
+            "shortcut": "handright"
+        },
+        {
+            "phrase": "☞",
+            "shortcut": "hr"
+        },
+        {
+            "phrase": "٩(^‿^)۶",
+            "shortcut": "haha"
+        },
+        {
+            "phrase": "٩( ๑╹ ꇴ╹)۶",
+            "shortcut": "happy"
+        },
+        {
+            "phrase": "ᕕ( ᐛ )ᕗ",
+            "shortcut": "happygarry"
+        },
+        {
+            "phrase": "♥",
+            "shortcut": "h"
+        },
+        {
+            "phrase": "♥",
+            "shortcut": "heart"
+        },
+        {
+            "phrase": "(ʘ‿ʘ)╯",
+            "shortcut": "hello"
+        },
+        {
+            "phrase": "(ʘ‿ʘ)╯",
+            "shortcut": "ohai"
+        },
+        {
+            "phrase": "(ʘ‿ʘ)╯",
+            "shortcut": "bye"
+        },
+        {
+            "phrase": "\\(°Ω°)/",
+            "shortcut": "help"
+        },
+        {
+            "phrase": "._.)/\\(._.",
+            "shortcut": "highfive"
+        },
+        {
+            "phrase": "( ｀皿´)｡ﾐ/",
+            "shortcut": "hitting"
+        },
+        {
+            "phrase": "(づ｡◕‿‿◕｡)づ",
+            "shortcut": "hug"
+        },
+        {
+            "phrase": "(づ｡◕‿‿◕｡)づ",
+            "shortcut": "hugs"
+        },
+        {
+            "phrase": "┐｜･ิω･ิ#｜┌",
+            "shortcut": "iknowright"
+        },
+        {
+            "phrase": "┐｜･ิω･ิ#｜┌",
+            "shortcut": "ikr"
+        },
+        {
+            "phrase": "୧(▲ᴗ▲)ノ",
+            "shortcut": "illuminati"
+        },
+        {
+            "phrase": "∞",
+            "shortcut": "infinity"
+        },
+        {
+            "phrase": "∞",
+            "shortcut": "inf"
+        },
+        {
+            "phrase": "(っ´ω`c)♡",
+            "shortcut": "inlove"
+        },
+        {
+            "phrase": "∫",
+            "shortcut": "int"
+        },
+        {
+            "phrase": "ଘ(੭*ˊᵕˋ)੭* ̀ˋ ɪɴᴛᴇʀɴᴇᴛ",
+            "shortcut": "internet"
+        },
+        {
+            "phrase": "‽",
+            "shortcut": "interrobang"
+        },
+        {
+            "phrase": "(❍ᴥ❍ʋ)",
+            "shortcut": "jake"
+        },
+        {
+            "phrase": "(¬,‿,¬)",
+            "shortcut": "kappa"
+        },
+        {
+            "phrase": "≧◡≦",
+            "shortcut": "kawaii"
+        },
+        {
+            "phrase": "┬┴┬┴┤Ɵ͆ل͜Ɵ͆ ༽ﾉ",
+            "shortcut": "keen"
+        },
+        {
+            "phrase": "~\\(≧▽≦)/~",
+            "shortcut": "kiahh"
+        },
+        {
+            "phrase": "(づ ￣ ³￣)づ",
+            "shortcut": "kiss"
+        },
+        {
+            "phrase": "／人◕ ‿‿ ◕人＼",
+            "shortcut": "kyubey"
+        },
+        {
+            "phrase": "λ",
+            "shortcut": "lambda"
+        },
+        {
+            "phrase": "_(:3」∠)_",
+            "shortcut": "lazy"
+        },
+        {
+            "phrase": "←",
+            "shortcut": "left"
+        },
+        {
+            "phrase": "←",
+            "shortcut": "<-"
+        },
+        {
+            "phrase": "( ͡° ͜ʖ ͡°)",
+            "shortcut": "lenny"
+        },
+        {
+            "phrase": "[̲̅$̲̅(̲̅ ͡° ͜ʖ ͡°̲̅)̲̅$̲̅]",
+            "shortcut": "lennybill"
+        },
+        {
+            "phrase": "(ง ͠° ͟ʖ ͡°)ง",
+            "shortcut": "lennyfight"
+        },
+        {
+            "phrase": "(ノ ͡° ͜ʖ ͡°ノ)   ︵ ( ͜。 ͡ʖ ͜。)",
+            "shortcut": "lennyflip"
+        },
+        {
+            "phrase": "( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)",
+            "shortcut": "lennygang"
+        },
+        {
+            "phrase": "¯\\_( ͡° ͜ʖ ͡°)_/¯",
+            "shortcut": "lennyshrug"
+        },
+        {
+            "phrase": "( ಠ ͜ʖ ರೃ)",
+            "shortcut": "lennysir"
+        },
+        {
+            "phrase": "┬┴┬┴┤( ͡° ͜ʖ├┬┴┬┴",
+            "shortcut": "lennystalker"
+        },
+        {
+            "phrase": "ᕦ( ͡° ͜ʖ ͡°)ᕤ",
+            "shortcut": "lennystrong"
+        },
+        {
+            "phrase": "╰( ͡° ͜ʖ ͡° )つ──☆*:・ﾟ",
+            "shortcut": "lennywizard"
+        },
+        {
+            "phrase": "L(° O °L)",
+            "shortcut": "lol"
+        },
+        {
+            "phrase": "(ಡ_ಡ)☞",
+            "shortcut": "look"
+        },
+        {
+            "phrase": "ᕦ(⩾﹏⩽)ᕥ",
+            "shortcut": "loud"
+        },
+        {
+            "phrase": "ᕦ(⩾﹏⩽)ᕥ",
+            "shortcut": "noise"
+        },
+        {
+            "phrase": "♥‿♥",
+            "shortcut": "love"
+        },
+        {
+            "phrase": "ʕ♥ᴥ♥ʔ",
+            "shortcut": "lovebear"
+        },
+        {
+            "phrase": "꒰ ꒡⌓꒡꒱",
+            "shortcut": "lumpy"
+        },
+        {
+            "phrase": "-`ღ´-",
+            "shortcut": "luv"
+        },
+        {
+            "phrase": "ヽ(｀Д´)⊃━☆ﾟ. * ･ ｡ﾟ,",
+            "shortcut": "magic"
+        },
+        {
+            "phrase": "(/¯◡ ‿ ◡)/¯ ~ ┻━┻",
+            "shortcut": "magicflip"
+        },
+        {
+            "phrase": "\\(°^°)/",
+            "shortcut": "meep"
+        },
+        {
+            "phrase": "ಠ_ಠ",
+            "shortcut": "meh"
+        },
+        {
+            "phrase": "\\m/,(> . <)_\\m/",
+            "shortcut": "metal"
+        },
+        {
+            "phrase": "\\m/,(> . <)_\\m/",
+            "shortcut": "rock"
+        },
+        {
+            "phrase": "ಡ_ಡ",
+            "shortcut": "mistyeyes"
+        },
+        {
+            "phrase": "༼ ༎ຶ ෴ ༎ຶ༽",
+            "shortcut": "monster"
+        },
+        {
+            "phrase": "♮",
+            "shortcut": "natural"
+        },
+        {
+            "phrase": "┌(◉ ͜ʖ◉)つ┣▇▇▇═──",
+            "shortcut": "needle"
+        },
+        {
+            "phrase": "┌(◉ ͜ʖ◉)つ┣▇▇▇═──",
+            "shortcut": "inject"
+        },
+        {
+            "phrase": "(⌐⊙_⊙)",
+            "shortcut": "nerd"
+        },
+        {
+            "phrase": "( ͡° ͜ °)",
+            "shortcut": "nice"
+        },
+        {
+            "phrase": "→_←",
+            "shortcut": "no"
+        },
+        {
+            "phrase": "／人◕ __ ◕人＼",
+            "shortcut": "noclue"
+        },
+        {
+            "phrase": "(っˆڡˆς)",
+            "shortcut": "nom"
+        },
+        {
+            "phrase": "(っˆڡˆς)",
+            "shortcut": "yummy"
+        },
+        {
+            "phrase": "(っˆڡˆς)",
+            "shortcut": "delicious"
+        },
+        {
+            "phrase": "♫",
+            "shortcut": "note"
+        },
+        {
+            "phrase": "♫",
+            "shortcut": "sing"
+        },
+        {
+            "phrase": "☢",
+            "shortcut": "nuclear"
+        },
+        {
+            "phrase": "☢",
+            "shortcut": "radioactive"
+        },
+        {
+            "phrase": "☢",
+            "shortcut": "nukular"
+        },
+        {
+            "phrase": "~=[,,_,,]:3",
+            "shortcut": "nyan"
+        },
+        {
+            "phrase": "@^@",
+            "shortcut": "nyeh"
+        },
+        {
+            "phrase": "( º﹃º )",
+            "shortcut": "ohshit"
+        },
+        {
+            "phrase": "Ω",
+            "shortcut": "omega"
+        },
+        {
+            "phrase": "◕_◕",
+            "shortcut": "omg"
+        },
+        {
+            "phrase": "⅛",
+            "shortcut": "1/8"
+        },
+        {
+            "phrase": "¼",
+            "shortcut": "1/4"
+        },
+        {
+            "phrase": "½",
+            "shortcut": "1/2"
+        },
+        {
+            "phrase": "⅓",
+            "shortcut": "1/3"
+        },
+        {
+            "phrase": "⌥",
+            "shortcut": "opt"
+        },
+        {
+            "phrase": "⌥",
+            "shortcut": "option"
+        },
+        {
+            "phrase": "(눈_눈)",
+            "shortcut": "orly"
+        },
+        {
+            "phrase": "(◞థ౪థ)ᴖ",
+            "shortcut": "ohyou"
+        },
+        {
+            "phrase": "(◞థ౪థ)ᴖ",
+            "shortcut": "ou"
+        },
+        {
+            "phrase": "✌(-‿-)✌",
+            "shortcut": "peace"
+        },
+        {
+            "phrase": "✌(-‿-)✌",
+            "shortcut": "victory"
+        },
+        {
+            "phrase": "(__>-",
+            "shortcut": "pear"
+        },
+        {
+            "phrase": "π",
+            "shortcut": "pi"
+        },
+        {
+            "phrase": "( •_•)O*¯`·.¸.·´¯`°Q(•_• )",
+            "shortcut": "pingpong"
+        },
+        {
+            "phrase": "._.",
+            "shortcut": "plain"
+        },
+        {
+            "phrase": "(˶‾᷄ ⁻̫ ‾᷅˵)",
+            "shortcut": "pleased"
+        },
+        {
+            "phrase": "(☞ﾟヮﾟ)☞",
+            "shortcut": "point"
+        },
+        {
+            "phrase": "ʕ •́؈•̀)",
+            "shortcut": "pooh"
+        },
+        {
+            "phrase": "(•ᴥ• )́`́'́`́'́⻍",
+            "shortcut": "porcupine"
+        },
+        {
+            "phrase": "£",
+            "shortcut": "pound"
+        },
+        {
+            "phrase": "(☝ ՞ਊ ՞)☝",
+            "shortcut": "praise"
+        },
+        {
+            "phrase": "O=('-'Q)",
+            "shortcut": "punch"
+        },
+        {
+            "phrase": "t(ಠ益ಠt)",
+            "shortcut": "rage"
+        },
+        {
+            "phrase": "t(ಠ益ಠt)",
+            "shortcut": "mad"
+        },
+        {
+            "phrase": "(ノಠ益ಠ)ノ彡┻━┻",
+            "shortcut": "rageflip"
+        },
+        {
+            "phrase": "(=^･ｪ･^=))ﾉ彡☆",
+            "shortcut": "rainbowcat"
+        },
+        {
+            "phrase": "ò_ô",
+            "shortcut": "really"
+        },
+        {
+            "phrase": "®",
+            "shortcut": "r"
+        },
+        {
+            "phrase": "→",
+            "shortcut": "right"
+        },
+        {
+            "phrase": "→",
+            "shortcut": "->"
+        },
+        {
+            "phrase": "୧༼ಠ益ಠ༽୨",
+            "shortcut": "riot"
+        },
+        {
+            "phrase": "(◔_◔)",
+            "shortcut": "rolleyes"
+        },
+        {
+            "phrase": "✿ڿڰۣ—",
+            "shortcut": "rose"
+        },
+        {
+            "phrase": "(╯°□°)╯",
+            "shortcut": "run"
+        },
+        {
+            "phrase": "ε(´סּ︵סּ`)з",
+            "shortcut": "sad"
+        },
+        {
+            "phrase": "ヽ༼ຈʖ̯ຈ༽ﾉ",
+            "shortcut": "saddonger"
+        },
+        {
+            "phrase": "( ͡° ʖ̯ ͡°)",
+            "shortcut": "sadlenny"
+        },
+        {
+            "phrase": "⅞",
+            "shortcut": "7/8"
+        },
+        {
+            "phrase": "♯",
+            "shortcut": "sharp"
+        },
+        {
+            "phrase": "♯",
+            "shortcut": "diesis"
+        },
+        {
+            "phrase": "╚(•⌂•)╝",
+            "shortcut": "shout"
+        },
+        {
+            "phrase": "¯\\_(ツ)_/¯",
+            "shortcut": "shrug"
+        },
+        {
+            "phrase": "=^_^=",
+            "shortcut": "shy"
+        },
+        {
+            "phrase": "Σ",
+            "shortcut": "sigma"
+        },
+        {
+            "phrase": "Σ",
+            "shortcut": "sum"
+        },
+        {
+            "phrase": "☠",
+            "shortcut": "skull"
+        },
+        {
+            "phrase": "ツ",
+            "shortcut": "smile"
+        },
+        {
+            "phrase": "☺︎",
+            "shortcut": "smiley"
+        },
+        {
+            "phrase": "¬‿¬",
+            "shortcut": "smirk"
+        },
+        {
+            "phrase": "☃",
+            "shortcut": "snowman"
+        },
+        {
+            "phrase": "(;´༎ຶД༎ຶ`)",
+            "shortcut": "sob"
+        },
+        {
+            "phrase": "ノ┬─┬ノ ︵ ( \\o°o)\\",
+            "shortcut": "soviettableflip"
+        },
+        {
+            "phrase": "♠",
+            "shortcut": "spade"
+        },
+        {
+            "phrase": "√",
+            "shortcut": "sqrt"
+        },
+        {
+            "phrase": "<コ:彡",
+            "shortcut": "squid"
+        },
+        {
+            "phrase": "★",
+            "shortcut": "star"
+        },
+        {
+            "phrase": "ᕙ(⇀‸↼‶)ᕗ",
+            "shortcut": "strong"
+        },
+        {
+            "phrase": "ε/̵͇̿̿/’̿’̿ ̿(◡︵◡)",
+            "shortcut": "suicide"
+        },
+        {
+            "phrase": "∑",
+            "shortcut": "sum"
+        },
+        {
+            "phrase": "☀",
+            "shortcut": "sun"
+        },
+        {
+            "phrase": "(๑•́ ヮ •̀๑)",
+            "shortcut": "surprised"
+        },
+        {
+            "phrase": "\\_(-_-)_/",
+            "shortcut": "surrender"
+        },
+        {
+            "phrase": "┬┴┬┴┤(･_├┬┴┬┴",
+            "shortcut": "stalker"
+        },
+        {
+            "phrase": "(̿▀̿‿ ̿▀̿ ̿)",
+            "shortcut": "swag"
+        },
+        {
+            "phrase": "o()xxxx[{::::::::::::::::::>",
+            "shortcut": "sword"
+        },
+        {
+            "phrase": "┬─┬﻿ ノ( ゜-゜ノ)",
+            "shortcut": "tabledown"
+        },
+        {
+            "phrase": "(ノ ゜Д゜)ノ ︵ ┻━┻",
+            "shortcut": "tableflip"
+        },
+        {
+            "phrase": "τ",
+            "shortcut": "tau"
+        },
+        {
+            "phrase": "(ಥ﹏ಥ)",
+            "shortcut": "tears"
+        },
+        {
+            "phrase": "୧༼ಠ益ಠ༽︻╦╤─",
+            "shortcut": "terrorist"
+        },
+        {
+            "phrase": "\\(^-^)/",
+            "shortcut": "thanks"
+        },
+        {
+            "phrase": "\\(^-^)/",
+            "shortcut": "thankyou"
+        },
+        {
+            "phrase": "\\(^-^)/",
+            "shortcut": "ty"
+        },
+        {
+            "phrase": "⸫",
+            "shortcut": "therefore"
+        },
+        {
+            "phrase": "⸫",
+            "shortcut": "so"
+        },
+        {
+            "phrase": "( ͡° ͜ʖ ͡°)_/¯",
+            "shortcut": "this"
+        },
+        {
+            "phrase": "⅜",
+            "shortcut": "3/8"
+        },
+        {
+            "phrase": "|=-(¤)-=|",
+            "shortcut": "tiefighter"
+        },
+        {
+            "phrase": "(=____=)",
+            "shortcut": "tired"
+        },
+        {
+            "phrase": "☜(꒡⌓꒡)",
+            "shortcut": "toldyouso"
+        },
+        {
+            "phrase": "☜(꒡⌓꒡)",
+            "shortcut": "toldyou"
+        },
+        {
+            "phrase": "ᕦ(òᴥó)ᕥ",
+            "shortcut": "toogood"
+        },
+        {
+            "phrase": "™",
+            "shortcut": "tm"
+        },
+        {
+            "phrase": "▲",
+            "shortcut": "triangle"
+        },
+        {
+            "phrase": "▲",
+            "shortcut": "t"
+        },
+        {
+            "phrase": "⅔",
+            "shortcut": "2/3"
+        },
+        {
+            "phrase": "┬──┬ ノ(ò_óノ)",
+            "shortcut": "unflip"
+        },
+        {
+            "phrase": "↑",
+            "shortcut": "up"
+        },
+        {
+            "phrase": "(๑•̀ㅂ•́)ง✧",
+            "shortcut": "victory"
+        },
+        {
+            "phrase": "(ÒДÓױ)",
+            "shortcut": "wat"
+        },
+        {
+            "phrase": "( * ^ *) ノシ",
+            "shortcut": "wave"
+        },
+        {
+            "phrase": "Ö",
+            "shortcut": "whaa"
+        },
+        {
+            "phrase": "(っ^з^)♪♬",
+            "shortcut": "whistle"
+        },
+        {
+            "phrase": "(°o•)",
+            "shortcut": "whoa"
+        },
+        {
+            "phrase": "ლ(`◉◞౪◟◉‵ლ)",
+            "shortcut": "why"
+        },
+        {
+            "phrase": "＼(＾O＾)／",
+            "shortcut": "woo"
+        },
+        {
+            "phrase": "(⊙＿⊙')",
+            "shortcut": "wtf"
+        },
+        {
+            "phrase": "⊙ω⊙",
+            "shortcut": "wut"
+        },
+        {
+            "phrase": "\\( ﾟヮﾟ)/",
+            "shortcut": "yay"
+        },
+        {
+            "phrase": "(•̀ᴗ•́)و ̑̑",
+            "shortcut": "yeah"
+        },
+        {
+            "phrase": "(•̀ᴗ•́)و ̑̑",
+            "shortcut": "yes"
+        },
+        {
+            "phrase": "¥",
+            "shortcut": "yen"
+        },
+        {
+            "phrase": "☯",
+            "shortcut": "yinyang"
+        },
+        {
+            "phrase": "☯",
+            "shortcut": "yy"
+        },
+        {
+            "phrase": "Yᵒᵘ Oᶰˡʸ Lᶤᵛᵉ Oᶰᶜᵉ",
+            "shortcut": "yolo"
+        },
+        {
+            "phrase": "ლ༼>╭ ͟ʖ╮<༽ლ",
+            "shortcut": "youkids"
+        },
+        {
+            "phrase": "ლ༼>╭ ͟ʖ╮<༽ლ",
+            "shortcut": "ukids"
+        },
+        {
+            "phrase": "(屮ﾟДﾟ)屮 Y U NO",
+            "shortcut": "y u no"
+        },
+        {
+            "phrase": "(屮ﾟДﾟ)屮 Y U NO",
+            "shortcut": "yuno"
+        },
+        {
+            "phrase": "⊹╰(⌣ʟ⌣)╯⊹",
+            "shortcut": "zen"
+        },
+        {
+            "phrase": "⊹╰(⌣ʟ⌣)╯⊹",
+            "shortcut": "meditation"
+        },
+        {
+            "phrase": "⊹╰(⌣ʟ⌣)╯⊹",
+            "shortcut": "omm"
+        },
+        {
+            "phrase": "(V) (°,,,,°) (V)",
+            "shortcut": "zoidberg"
+        },
+        {
+            "phrase": "[¬º-°]¬",
+            "shortcut": "zombie"
+        }]
+}

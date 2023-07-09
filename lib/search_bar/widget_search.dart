@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:emojis/emoji.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -34,14 +35,16 @@ class WidgetSearch extends StatefulWidget {
 class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver {
   static const maxResultsAtOnce = 7;
 
-  List<ModelRetroEmoji> searchResults = [];
-  List<ModelRetroEmoji> allEmojis = [];
+  List<ModelRetroEmoji> asciiEmojiSearchResults = [];
+  List<ModelRetroEmoji> allAsciiEmojis = [];
+
+  List<Emoji> allEmojis = Emoji.all();
+  List<Emoji> emojiSearchResults = [];
+
   List<ModelVisibilty> visibiltyList = [];
   List<String> memeResults = [];
-  List<Emoji> emojis = Emoji.all();
 
   int selectedIndex = 0;
-  int visibiltyIndex = 0;
   FocusNode focusNode = FocusNode();
   ScrollController scrollController = ScrollController();
   int inactiveTimes = 0;
@@ -114,25 +117,31 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
 
     // Parse the loaded string as JSON
     final jsonData = jsonDecode(jsonString);
-    allEmojis = (jsonData["retro_emojis"] as List).map((e) => ModelRetroEmoji.fromMap(e)).toList();
+    allAsciiEmojis = (jsonData["retro_emojis"] as List).map((e) => ModelRetroEmoji.fromMap(e)).toList();
+
+    // Load emojis
   }
 
   void saveToClipboard() async {
     try {
-      if (searchType.value == SearchType.ascii) {
-        final emoji = searchResults[selectedIndex];
-        await Clipboard.setData(ClipboardData(text: emoji.emoji));
-      } else {
-        // Get the url
-        final memeUrl = memeResults[selectedIndex];
-        // Check if available in cache
-        var file = await DefaultCacheManager().getSingleFile(memeUrl);
-        if (await file.exists()) {
-          await Pasteboard.writeFiles([file.path]);
-        } else {
-          log("File not found in cache");
-        }
-        //TODO Download if not in cache
+      switch (searchType.value) {
+        case SearchType.ascii:
+          final emoji = asciiEmojiSearchResults[selectedIndex];
+          await Clipboard.setData(ClipboardData(text: emoji.emoji));
+          break;
+        case SearchType.emojis:
+          final emoji = emojiSearchResults[selectedIndex];
+          await Clipboard.setData(ClipboardData(text: emoji.char));
+        case SearchType.gif:
+        case SearchType.image:
+          final memeUrl = memeResults[selectedIndex];
+          // Check if available in cache
+          var file = await DefaultCacheManager().getSingleFile(memeUrl);
+          if (await file.exists()) {
+            await Pasteboard.writeFiles([file.path]);
+          } else {
+            log("File not found in cache");
+          }
       }
     } catch (e) {
       log("Error saving to clipboard: $e");
@@ -140,60 +149,20 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
     exit(0);
   }
 
-  void adjustVisibiltyindex(EnumArrow arrow) {
-    switch (arrow) {
-      case EnumArrow.up:
-        if (visibiltyIndex <= 4) {
-          return;
-        }
-        visibiltyIndex = visibiltyIndex - 5;
-        break;
-      case EnumArrow.down:
-        if (visibiltyIndex >= 15) {
-          return;
-        }
-        visibiltyIndex = visibiltyIndex + 5;
-        break;
-      case EnumArrow.left:
-        if (visibiltyIndex == 4) {
-          visibiltyIndex = 0;
-          return;
-        }
-        visibiltyIndex--;
-        break;
-      case EnumArrow.right:
-        if (visibiltyIndex == 19) {
-          visibiltyIndex = 15;
-          return;
-        }
-        visibiltyIndex++;
-        break;
-    }
-  }
-
   bool _onKey(KeyEvent event) {
     final key = event.logicalKey.keyLabel;
 
     if (event is KeyDownEvent) {
       if (key == "Enter") {
-        // final renderbox = key1.currentContext!.findRenderObject() as RenderBox;
-        // // renderbox.size;
-        // log("Size: ${renderbox.size}");
-
         // Save to clipboard
-
         saveToClipboard();
       } else if (key == "Arrow Down") {
-        adjustVisibiltyindex(EnumArrow.down);
         updateSelectedIndex(EnumArrow.down);
       } else if (key == "Arrow Up") {
-        adjustVisibiltyindex(EnumArrow.up);
         updateSelectedIndex(EnumArrow.up);
       } else if (key == "Arrow Left") {
-        adjustVisibiltyindex(EnumArrow.left);
         updateSelectedIndex(EnumArrow.left);
       } else if (key == "Arrow Right") {
-        adjustVisibiltyindex(EnumArrow.left);
         updateSelectedIndex(EnumArrow.right);
       } else if (key == "Escape") {
         exit(0);
@@ -218,6 +187,13 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
         if (searchText.isNotEmpty) {
           findGif();
         }
+      } else if (key == "4") {
+        selectedIndex = 0;
+        memeResults.clear();
+        searchType.value = SearchType.emojis;
+        if (searchText.isNotEmpty) {
+          findEmoji();
+        }
       }
     }
 
@@ -233,55 +209,11 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
     return false;
   }
 
-  // Adjust scroll position if at the edge and the user presses up/down
-  // void adjustScroll(bool goingUp) {
-  //   if (searchResults.length <= maxResultsAtOnce) {
-  //     return;
-  //   }
-  //   final scrollOffset = scrollController.offset;
-  //   // selected Item index in viewport
-  //   final itemsOutsideViewport = (scrollOffset / searchItemHeight).floor();
-  //   final indexInViewport = (selectedIndex - itemsOutsideViewport);
-
-  //   if (indexInViewport == 6 && !goingUp) {
-  //     scrollController.animateTo((selectedIndex - 5) * searchItemHeight, duration: const Duration(milliseconds: 100), curve: Curves.easeIn);
-  //   } else if (indexInViewport == 1 && goingUp) {
-  //     scrollController.animateTo(scrollOffset - searchItemHeight, duration: const Duration(milliseconds: 100), curve: Curves.easeIn);
-  //   }
-  // }
-
-  // Default height is 70
-  void updateWindowSize() {
-    final double calculatedHeight = searchBarSize + 3 + 5 + 30 + ((searchResults.length <= maxResultsAtOnce ? searchResults.length : maxResultsAtOnce) * 40);
-
-    windowManager.setSize(Size(600, calculatedHeight));
-  }
-
   void updateWindowSizeForImages() {
     windowManager.setSize(const Size(600, searchBarSize + 464));
   }
 
   void updateSelectedIndex(EnumArrow arrow) {
-    // Check if something invisible
-    // scrollController.
-    // final int visibleIndex = scrollController.offset ~/ 145;
-    // log("Visible index:${scrollController.offset} $visibleIndex");
-    // switch (arrow) {
-    //   case EnumArrow.up:
-    //   case EnumArrow.left:
-    //     break;
-    //   case EnumArrow.down:
-    //   // if (visibleIndex == 15 || visi){
-
-    //   // }
-    //   break;
-    //   case EnumArrow.right:
-    //     // if (visibiltyList[selectedIndex].visibleHeight != 116.0) {
-    //     //   scrollController.jumpTo(scrollController.offset + (116.0 - visibiltyList[selectedIndex].visibleHeight));
-    //     // }
-    //     break;
-    // }
-
     int delta = 0;
     switch (arrow) {
       case EnumArrow.up:
@@ -297,13 +229,29 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
         delta = selectedIndex + 1;
         break;
     }
+    int length = 0;
+    switch (searchType.value) {
+      case SearchType.ascii:
+        length = asciiEmojiSearchResults.length;
+        break;
+      case SearchType.image:
+        length = memeResults.length;
+        break;
+      case SearchType.gif:
+        length = memeResults.length;
+        break;
+      case SearchType.emojis:
+        length = allEmojis.length;
+        break;
+    }
+
     if (searchType.value == SearchType.ascii) {
-      if (delta < searchResults.length && delta >= 0) {
+      if (delta < length && delta >= 0) {
         selectedIndex = delta;
         setState(() {});
       }
     } else {
-      if (delta < memeResults.length && delta >= 0) {
+      if (delta < length && delta >= 0) {
         selectedIndex = delta;
         setState(() {});
       }
@@ -323,7 +271,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
   }
 
   void adjustScroll(bool goingUp) {
-    if (searchResults.length <= maxResultsAtOnce) {
+    if (asciiEmojiSearchResults.length <= maxResultsAtOnce) {
       return;
     }
     final scrollOffset = scrollController.offset;
@@ -389,8 +337,16 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
 
   void findAsciiEmoji() {
     setState(() {
-      searchResults = allEmojis.where((element) => element.shortName.toLowerCase().contains(searchText.toLowerCase())).toList();
+      asciiEmojiSearchResults = allAsciiEmojis.where((element) => element.shortName.toLowerCase().contains(searchText.toLowerCase())).toList();
     });
+    updateWindowSizeForImages();
+  }
+
+  void findEmoji() {
+    setState(() {
+      emojiSearchResults = allEmojis.where((element) => element.shortName.toLowerCase().contains(searchText.toLowerCase())).toList();
+    });
+    updateWindowSizeForImages();
   }
 
   GlobalKey key1 = GlobalKey();
@@ -429,9 +385,11 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
                         startTimer();
                       } else if (searchType.value == SearchType.gif) {
                         startTimer();
-                      } else {
+                      } else if (searchType.value == SearchType.ascii) {
                         findAsciiEmoji();
-                        updateWindowSizeForImages();
+                        // updateWindowSizeForImages();
+                      } else if (searchType.value == SearchType.emojis) {
+                        findEmoji();
                       }
                     },
                   ),
@@ -463,9 +421,17 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
                           ],
                         ),
                       ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Text("(4)", style: TextStyle(color: Colors.grey.withOpacity(0.5))),
+                            Text("  Emojis", style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5))),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                  if (searchResults.isNotEmpty || memeResults.isNotEmpty)
+                  if (asciiEmojiSearchResults.isNotEmpty || memeResults.isNotEmpty || emojiSearchResults.isNotEmpty)
                     Container(
                       height: 1,
                       margin: const EdgeInsets.only(bottom: 2),
@@ -478,7 +444,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
                   child: ValueListenableBuilder(
                       valueListenable: searchType,
                       builder: (context, SearchType value, child) {
-                        if (memeResults.isEmpty && searchResults.isEmpty && hasFirstSearchHappened) {
+                        if (memeResults.isEmpty && asciiEmojiSearchResults.isEmpty && hasFirstSearchHappened) {
                           return Center(
                             child: Text(
                               "Search : )",
@@ -495,102 +461,86 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
                               ),
                             );
                           }
-                          return LayoutBuilder(builder: (context, cons) {
-                            // log("max width ${cons.maxWidth}");
-                            return GridView(
-                                controller: scrollController,
-                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: gridCrossAxisCount, childAspectRatio: 1),
-                                children: List.generate(memeResults.length, (index) {
-                                  return Container(
-                                    padding: const EdgeInsets.all(5),
-                                    decoration: selectedIndex == index
-                                        ? BoxDecoration(
-                                            color: Colors.white.withOpacity(0.6),
-                                            borderRadius: BorderRadius.circular(10),
-                                          )
-                                        : null,
-                                    child: CachedNetworkImage(
-                                      imageUrl: memeResults[index],
-                                      fit: BoxFit.cover,
-                                      placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                                      errorWidget: (context, url, error) => const Icon(Icons.error),
-                                    ),
-                                  );
-                                }));
-                          });
+                          return GridView(
+                              controller: scrollController,
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: gridCrossAxisCount, childAspectRatio: 1),
+                              children: List.generate(memeResults.length, (index) {
+                                return Container(
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: selectedIndex == index
+                                      ? BoxDecoration(
+                                          color: Colors.white.withOpacity(0.6),
+                                          borderRadius: BorderRadius.circular(10),
+                                        )
+                                      : null,
+                                  child: CachedNetworkImage(
+                                    imageUrl: memeResults[index],
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                  ),
+                                );
+                              }));
                         }
 
-                        return LayoutBuilder(builder: (context, cons) {
-                          log("max height ${cons.maxHeight}");
-                          return Container(
-                            // color: Colors.red,
-                            // key: key1,
-                            child: GridView(
-                                controller: scrollController,
-                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: gridCrossAxisCount, childAspectRatio: 1),
-                                children: List.generate(searchResults.length, (index) {
-                                  return SizedBox(
-                                    key: index == 0 ? key1 : null,
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      margin: const EdgeInsets.all(5),
-                                      decoration: selectedIndex == index
-                                          ? BoxDecoration(
-                                              color: Colors.blue.withOpacity(0.2),
-                                              borderRadius: BorderRadius.circular(10),
-                                            )
-                                          : null,
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              searchResults[index].shortName,
-                                              style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.7)),
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(searchResults[index].emoji, style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.7))),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                  // return CachedNetworkImage(
-                                  //   imageUrl: memeResults[index],
-                                  //   fit: BoxFit.cover,
-                                  //   placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                                  //   errorWidget: (context, url, error) => const Icon(Icons.error),
-                                  // );
-                                })),
-                          );
-                        });
+                        int length = 0;
+                        if (searchType.value == SearchType.emojis) {
+                          length = emojiSearchResults.length;
+                        } else {
+                          length = asciiEmojiSearchResults.length;
+                        }
 
-                        // return ListView.builder(
-                        //     controller: scrollController,
-                        //     padding: const EdgeInsets.only(bottom: 5),
-                        //     itemBuilder: (context, index) {
-                        //       return SizedBox(
-                        //         height: searchItemHeight,
-                        //         child: Container(
-                        //           padding: const EdgeInsets.symmetric(horizontal: 5),
-                        //           decoration: BoxDecoration(color: selectedIndex == index ? Colors.blue.withOpacity(0.4) : Colors.transparent, borderRadius: BorderRadius.circular(5)),
-                        //           child: Row(
-                        //             children: [
-                        //               Text(
-                        //                 searchResults[index].shortName,
-                        //                 style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.7)),
-                        //               ),
-                        //               const Spacer(),
-                        //               Text(searchResults[index].emoji, style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.7))),
-                        //             ],
-                        //           ),
-                        //         ),
-                        //       );
-                        //     },
-                        //     itemCount: searchResults.length);
+                        return GridView(
+                            controller: scrollController,
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: gridCrossAxisCount, childAspectRatio: 1),
+                            children: List.generate(length, (index) {
+                              String shortName = "";
+                              String emoji = "";
+                              if (searchType.value == SearchType.emojis) {
+                                shortName = emojiSearchResults[index].shortName.replaceAll("_", " ");
+                                emoji = emojiSearchResults[index].char;
+                              } else {
+                                shortName = asciiEmojiSearchResults[index].shortName;
+                                emoji = asciiEmojiSearchResults[index].emoji;
+                              }
+                              return SizedBox(
+                                key: index == 0 ? key1 : null,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  margin: const EdgeInsets.all(5),
+                                  decoration: selectedIndex == index
+                                      ? BoxDecoration(
+                                          color: Colors.blue.withOpacity(0.2),
+                                          borderRadius: BorderRadius.circular(10),
+                                        )
+                                      : null,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          width: double.maxFinite,
+                                          height: 30,
+                                          child: AutoSizeText(
+                                            shortName,
+                                            textAlign: TextAlign.center,
+                                            maxLines: 2,
+                                            style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.7)),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(emoji,
+                                            style: TextStyle(
+                                                color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.7), fontSize: searchType.value == SearchType.emojis ? 30 : 12)),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }));
                       }))
             ],
           ),

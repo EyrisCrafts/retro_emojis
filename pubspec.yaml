@@ -46,6 +46,7 @@ dependencies:
   flutter_cache_manager: ^3.3.1
   pasteboard: ^0.2.0
   emojis: ^0.9.9
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:

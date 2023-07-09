@@ -1,4 +1,4 @@
-enum SearchType { ascii, image, gif }
+enum SearchType { ascii, image, gif, emojis }
 
 enum EnumPlatforum { macos, windows, linux }
 

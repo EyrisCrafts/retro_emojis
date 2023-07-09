@@ -24,6 +24,18 @@ A simple emoji finder
 If you want to build your own dmg instead of the releases, you can follow this [article](https://retroportalstudio.medium.com/creating-dmg-file-for-flutter-macos-apps-e448ff1cb0f). I'll mention the steps here regardless.
 You need to have flutter installed.
 
+### Install Rust
+
+For Macos/Linux
+
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+For Windows
+
+[Rust Installer](https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe)
+
 Clone the Repository
 ```
 git clone https://github.com/K-Rafiki/retro_emojis

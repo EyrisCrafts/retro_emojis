@@ -9,8 +9,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:pasteboard/pasteboard.dart';
 import 'package:retro_typer/enums.dart';
 import 'package:retro_typer/main.dart';
-import 'package:retro_typer/models/model_retro_emoji.dart';
-import 'package:retro_typer/models/model_visibility.dart';
+import 'package:retro_typer/models/model_emoji.dart';
 import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 
 import 'package:flutter/material.dart';
@@ -30,16 +29,11 @@ class WidgetSearch extends StatefulWidget {
 }
 
 class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver {
-  static const maxResultsAtOnce = 7;
+  static const maxResultsAtOnce = 25;
 
-  List<ModelRetroEmoji> asciiEmojiSearchResults = [];
-  List<ModelRetroEmoji> allAsciiEmojis = [];
-
-  List<Emoji> allEmojis = Emoji.all();
-  List<Emoji> emojiSearchResults = [];
-
-  List<ModelVisibilty> visibiltyList = [];
-  List<String> memeResults = [];
+  List<ModelEmoji> searchResults = [];
+  List<ModelEmoji> allAsciiEmojis = [];
+  List<ModelEmoji> allNormalEmojis = Emoji.all().map((e) => ModelEmoji(emoji: e.char, shortName: e.shortName, searchType: SearchType.emojis)).toList();
 
   int selectedIndex = 0;
   FocusNode focusNode = FocusNode();
@@ -49,6 +43,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
   String searchText = "";
 
   ValueNotifier<SearchType> searchType = ValueNotifier(SearchType.ascii);
+  final ValueNotifier<bool> _gridUpdate = ValueNotifier(false);
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -57,8 +52,8 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
     }
     if (state.name == "inactive" && inactiveTimes > 1) {
       log("Lost focus. Closing");
-      // TODO uncomment this
-      // exit(0);
+
+      exit(0);
     }
   }
 
@@ -114,7 +109,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
 
     // Parse the loaded string as JSON
     final jsonData = jsonDecode(jsonString);
-    allAsciiEmojis = (jsonData["retro_emojis"] as List).map((e) => ModelRetroEmoji.fromMap(e)).toList();
+    allAsciiEmojis = (jsonData["retro_emojis"] as List).map((e) => ModelEmoji(searchType: SearchType.ascii, emoji: e["phrase"], shortName: e["shortcut"])).toList();
 
     // Load emojis
   }
@@ -123,15 +118,12 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
     try {
       switch (searchType.value) {
         case SearchType.ascii:
-          final emoji = asciiEmojiSearchResults[selectedIndex];
-          await Clipboard.setData(ClipboardData(text: emoji.emoji));
-          break;
         case SearchType.emojis:
-          final emoji = emojiSearchResults[selectedIndex];
-          await Clipboard.setData(ClipboardData(text: emoji.char));
+          final emoji = searchResults[selectedIndex];
+          await Clipboard.setData(ClipboardData(text: emoji.emoji));
         case SearchType.gif:
         case SearchType.image:
-          final memeUrl = memeResults[selectedIndex];
+          final memeUrl = searchResults[selectedIndex].memeUrl;
           // Check if available in cache
           var file = await DefaultCacheManager().getSingleFile(memeUrl);
           if (await file.exists()) {
@@ -164,7 +156,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
       } else if (key == "Escape") {
         exit(0);
       } else if (key == "1") {
-        memeResults.clear();
+        searchResults.clear();
         selectedIndex = 0;
         searchType.value = SearchType.ascii;
         if (searchText.isNotEmpty) {
@@ -172,21 +164,21 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
         }
       } else if (key == "2") {
         selectedIndex = 0;
-        memeResults.clear();
+        searchResults.clear();
         searchType.value = SearchType.image;
         if (searchText.isNotEmpty) {
           findMeme();
         }
       } else if (key == "3") {
         selectedIndex = 0;
-        memeResults.clear();
+        searchResults.clear();
         searchType.value = SearchType.gif;
         if (searchText.isNotEmpty) {
           findGif();
         }
       } else if (key == "4") {
         selectedIndex = 0;
-        memeResults.clear();
+        searchResults.clear();
         searchType.value = SearchType.emojis;
         if (searchText.isNotEmpty) {
           findEmoji();
@@ -226,51 +218,25 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
         delta = selectedIndex + 1;
         break;
     }
-    int length = 0;
-    switch (searchType.value) {
-      case SearchType.ascii:
-        length = asciiEmojiSearchResults.length;
-        break;
-      case SearchType.image:
-        length = memeResults.length;
-        break;
-      case SearchType.gif:
-        length = memeResults.length;
-        break;
-      case SearchType.emojis:
-        length = allEmojis.length;
-        break;
-    }
+    int length = searchResults.length;
 
     if (searchType.value == SearchType.ascii) {
       if (delta < length && delta >= 0) {
         selectedIndex = delta;
-        setState(() {});
+        _gridUpdate.value = !_gridUpdate.value;
       }
     } else {
       if (delta < length && delta >= 0) {
         selectedIndex = delta;
-        setState(() {});
+        _gridUpdate.value = !_gridUpdate.value;
       }
     }
-    switch (arrow) {
-      case EnumArrow.up:
-        adjustScroll(true);
-        break;
-      case EnumArrow.down:
-        adjustScroll(false);
-        break;
-      case EnumArrow.left:
-        break;
-      case EnumArrow.right:
-        break;
+    if (arrow == EnumArrow.up || arrow == EnumArrow.down) {
+      adjustScroll(arrow == EnumArrow.up);
     }
   }
 
   void adjustScroll(bool goingUp) {
-    if (asciiEmojiSearchResults.length <= maxResultsAtOnce) {
-      return;
-    }
     final scrollOffset = scrollController.offset;
     // selected Item index in viewport
     final itemsOutsideViewport = (scrollOffset / itemHeight).floor();
@@ -285,23 +251,22 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
   }
 
   void findMeme() {
-    memeResults.clear();
+    searchResults.clear();
     log("Searching for memes with $searchText");
-    final url = "https://g.tenor.com/v1/search?q=$searchText&key=LIVDSRZULELA&limit=15";
+    final url = "https://g.tenor.com/v1/search?q=$searchText&key=LIVDSRZULELA&limit=$maxResultsAtOnce";
     try {
       http.get(Uri.parse(url)).then((response) {
         final json = jsonDecode(response.body);
         final data = json["results"] as List<dynamic>;
         for (final result in data) {
           try {
-            memeResults.add(result["media"].first["mp4"]["preview"]);
+            searchResults.add(ModelEmoji(memeUrl: result["media"].first["mp4"]["preview"], searchType: SearchType.image));
           } catch (e) {
             log("Error parsing meme: $e");
           }
         }
-        log("Memes length ${memeResults.length}");
         updateWindowSizeForImages();
-        setState(() {});
+        _gridUpdate.value = !_gridUpdate.value;
       });
     } catch (e) {
       log("Error searching for memes: $e");
@@ -309,23 +274,23 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
   }
 
   void findGif() {
-    memeResults.clear();
+    searchResults.clear();
     log("Searching for memes with $searchText");
-    final url = "https://g.tenor.com/v1/search?q=$searchText&key=LIVDSRZULELA&limit=15";
+    final url = "https://g.tenor.com/v1/search?q=$searchText&key=LIVDSRZULELA&limit=$maxResultsAtOnce";
     try {
       http.get(Uri.parse(url)).then((response) {
         final json = jsonDecode(response.body);
         final data = json["results"] as List<dynamic>;
         for (final result in data) {
           try {
-            memeResults.add(result["media"].first["mediumgif"]["url"]);
+            searchResults.add(ModelEmoji(memeUrl: result["media"].first["mediumgif"]["url"], searchType: SearchType.gif));
           } catch (e) {
             log("Error parsing meme: $e");
           }
         }
-        log("Memes length ${memeResults.length}");
+        log("Memes length ${searchResults.length}");
         updateWindowSizeForImages();
-        setState(() {});
+        _gridUpdate.value = !_gridUpdate.value;
       });
     } catch (e) {
       log("Error searching for memes: $e");
@@ -333,20 +298,17 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
   }
 
   void findAsciiEmoji() {
-    setState(() {
-      asciiEmojiSearchResults = allAsciiEmojis.where((element) => element.shortName.toLowerCase().contains(searchText.toLowerCase())).toList();
-    });
+    searchResults = allAsciiEmojis.where((element) => element.shortName.toLowerCase().contains(searchText.toLowerCase())).toList();
+    _gridUpdate.value = !_gridUpdate.value;
     updateWindowSizeForImages();
   }
 
   void findEmoji() {
-    setState(() {
-      emojiSearchResults = allEmojis.where((element) => element.shortName.toLowerCase().contains(searchText.toLowerCase())).toList();
-    });
+    searchResults = allNormalEmojis.where((element) => element.shortName.toLowerCase().contains(searchText.toLowerCase())).toList();
+    _gridUpdate.value = !_gridUpdate.value;
     updateWindowSizeForImages();
   }
 
-  GlobalKey key1 = GlobalKey();
   @override
   Widget build(BuildContext context) {
     bool isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark ? true : false;
@@ -365,184 +327,162 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
           padding: const EdgeInsets.only(left: 10, right: 10),
           child: Column(
             children: [
-              Column(
-                // key: key1,
-                mainAxisSize: MainAxisSize.min,
+              TextFormField(
+                decoration: InputDecoration(hintStyle: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5)), hintText: "Search", border: InputBorder.none),
+                focusNode: focusNode,
+                cursorColor: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5),
+                style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.9)),
+                inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r"\d"))],
+                onChanged: (value) {
+                  hasFirstSearchHappened = true;
+                  searchText = value;
+                  if (searchType.value == SearchType.image) {
+                    startTimer();
+                  } else if (searchType.value == SearchType.gif) {
+                    startTimer();
+                  } else if (searchType.value == SearchType.ascii) {
+                    findAsciiEmoji();
+                  } else if (searchType.value == SearchType.emojis) {
+                    findEmoji();
+                  }
+                },
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  TextFormField(
-                    decoration: InputDecoration(hintStyle: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5)), hintText: "Search", border: InputBorder.none),
-                    focusNode: focusNode,
-                    cursorColor: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5),
-                    style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.9)),
-                    inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r"\d"))],
-                    onChanged: (value) {
-                      hasFirstSearchHappened = true;
-                      searchText = value;
-                      if (searchType.value == SearchType.image) {
-                        startTimer();
-                      } else if (searchType.value == SearchType.gif) {
-                        startTimer();
-                      } else if (searchType.value == SearchType.ascii) {
-                        findAsciiEmoji();
-                        // updateWindowSizeForImages();
-                      } else if (searchType.value == SearchType.emojis) {
-                        findEmoji();
-                      }
-                    },
+                  WidgetSearchTypeButton(
+                    isDarkMode: isDarkMode,
+                    shortcut: "(1)",
+                    name: "  Ascii",
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Text("(1)", style: TextStyle(color: Colors.grey.withOpacity(0.5))),
-                            Text("  Ascii", style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5))),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Text("(2)", style: TextStyle(color: Colors.grey.withOpacity(0.5))),
-                            Text("  Images", style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5))),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Text("(3)", style: TextStyle(color: Colors.grey.withOpacity(0.5))),
-                            Text("  Gifs", style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5))),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Text("(4)", style: TextStyle(color: Colors.grey.withOpacity(0.5))),
-                            Text("  Emojis", style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5))),
-                          ],
-                        ),
-                      ),
-                    ],
+                  WidgetSearchTypeButton(
+                    isDarkMode: isDarkMode,
+                    shortcut: "(2)",
+                    name: "  Images",
                   ),
-                  if (asciiEmojiSearchResults.isNotEmpty || memeResults.isNotEmpty || emojiSearchResults.isNotEmpty)
-                    Container(
-                      height: 1,
-                      margin: const EdgeInsets.only(bottom: 2),
-                      width: double.maxFinite,
-                      color: Colors.grey.withOpacity(0.5),
-                    ),
+                  WidgetSearchTypeButton(
+                    isDarkMode: isDarkMode,
+                    shortcut: "(3)",
+                    name: "  Gifs",
+                  ),
+                  WidgetSearchTypeButton(
+                    isDarkMode: isDarkMode,
+                    shortcut: "(4)",
+                    name: "  Emojis",
+                  ),
                 ],
               ),
+              if (searchResults.isNotEmpty)
+                Container(
+                  height: 1,
+                  margin: const EdgeInsets.only(bottom: 2),
+                  width: double.maxFinite,
+                  color: Colors.grey.withOpacity(0.5),
+                ),
               Expanded(
                   child: ValueListenableBuilder(
                       valueListenable: searchType,
                       builder: (context, SearchType value, child) {
-                        if (memeResults.isEmpty && asciiEmojiSearchResults.isEmpty && hasFirstSearchHappened) {
-                          return Center(
-                            child: Text(
-                              "Search : )",
-                              style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5)),
-                            ),
-                          );
-                        }
-                        if (value == SearchType.image || value == SearchType.gif) {
-                          if (memeResults.isEmpty) {
-                            return Center(
-                              child: Text(
-                                "Search Memes",
-                                style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5)),
-                              ),
-                            );
-                          }
-                          return GridView(
-                              controller: scrollController,
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: gridCrossAxisCount, childAspectRatio: 1),
-                              children: List.generate(memeResults.length, (index) {
-                                return Container(
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: selectedIndex == index
-                                      ? BoxDecoration(
-                                          color: Colors.white.withOpacity(0.6),
-                                          borderRadius: BorderRadius.circular(10),
-                                        )
-                                      : null,
-                                  child: CachedNetworkImage(
-                                    imageUrl: memeResults[index],
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                        return ValueListenableBuilder(
+                            valueListenable: _gridUpdate,
+                            builder: (context, _, __) {
+                              if (searchResults.isEmpty && hasFirstSearchHappened) {
+                                return Center(
+                                  child: Text(
+                                    "Search : )",
+                                    style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5)),
                                   ),
                                 );
-                              }));
-                        }
-
-                        int length = 0;
-                        if (searchType.value == SearchType.emojis) {
-                          length = emojiSearchResults.length;
-                        } else {
-                          length = asciiEmojiSearchResults.length;
-                        }
-
-                        return GridView(
-                            controller: scrollController,
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: gridCrossAxisCount, childAspectRatio: 1),
-                            children: List.generate(length, (index) {
-                              String shortName = "";
-                              String emoji = "";
-                              if (searchType.value == SearchType.emojis) {
-                                shortName = emojiSearchResults[index].shortName.replaceAll("_", " ");
-                                emoji = emojiSearchResults[index].char;
-                              } else {
-                                shortName = asciiEmojiSearchResults[index].shortName;
-                                emoji = asciiEmojiSearchResults[index].emoji;
                               }
-                              return SizedBox(
-                                key: index == 0 ? key1 : null,
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.all(5),
-                                  decoration: selectedIndex == index
-                                      ? BoxDecoration(
-                                          color: Colors.blue.withOpacity(0.2),
-                                          borderRadius: BorderRadius.circular(10),
-                                        )
-                                      : null,
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          width: double.maxFinite,
-                                          height: 30,
-                                          child: AutoSizeText(
-                                            shortName,
-                                            textAlign: TextAlign.center,
-                                            maxLines: 2,
-                                            style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.7)),
-                                          ),
+                              return GridView(
+                                  controller: scrollController,
+                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: gridCrossAxisCount, childAspectRatio: 1),
+                                  children: List.generate(searchResults.length, (index) {
+                                    final item = searchResults[index];
+                                    Widget child;
+                                    if (item.searchType == SearchType.ascii || item.searchType == SearchType.emojis) {
+                                      String shortName = searchResults[index].shortName.replaceAll("_", " ");
+                                      String emoji = searchResults[index].emoji;
+                                      child = Container(
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          children: [
+                                            Flexible(
+                                              flex: 2,
+                                              fit: FlexFit.tight,
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                width: double.maxFinite,
+                                                child: AutoSizeText(
+                                                  shortName,
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: 2,
+                                                  style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.7)),
+                                                ),
+                                              ),
+                                            ),
+                                            Flexible(
+                                              flex: 3,
+                                              fit: FlexFit.tight,
+                                              child: Text(emoji,
+                                                  style: TextStyle(
+                                                      color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.7), fontSize: searchType.value == SearchType.emojis ? 30 : 12)),
+                                            ),
+                                          ],
                                         ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(emoji,
-                                            style: TextStyle(
-                                                color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.7), fontSize: searchType.value == SearchType.emojis ? 30 : 12)),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }));
+                                      );
+                                    } else {
+                                      child = CachedNetworkImage(
+                                        imageUrl: item.memeUrl,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                                      );
+                                    }
+
+                                    return Container(
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: selectedIndex == index
+                                          ? BoxDecoration(
+                                              color: (item.searchType == SearchType.image || item.searchType == SearchType.gif) ? Colors.white.withOpacity(0.6) : Colors.blue.withOpacity(0.2),
+                                              borderRadius: BorderRadius.circular(10),
+                                            )
+                                          : null,
+                                      child: child,
+                                    );
+                                  }));
+                            });
                       }))
             ],
           ),
         );
       }),
+    );
+  }
+}
+
+class WidgetSearchTypeButton extends StatelessWidget {
+  const WidgetSearchTypeButton({
+    super.key,
+    required this.isDarkMode,
+    required this.shortcut,
+    required this.name,
+  });
+
+  final bool isDarkMode;
+  final String shortcut;
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Row(
+        children: [
+          Text(shortcut, style: TextStyle(color: Colors.grey.withOpacity(0.5))),
+          Text(name, style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5))),
+        ],
+      ),
     );
   }
 }

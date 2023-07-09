@@ -66,8 +66,8 @@ appdmg ./config.json ./mydmg.dmg
 
 
 ## TODO
-- [ ] Add normal emojis
-- [ ] Add Gifs
+- [X] Add normal emojis
+- [X] Add Gifs
 - [ ] Add ascii text images
 - [ ] Recently used appear at the top
 

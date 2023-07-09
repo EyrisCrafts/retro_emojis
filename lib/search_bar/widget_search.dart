@@ -15,13 +15,10 @@ import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:http/http.dart' as http;
 
 // TODO Features needed
-// Add normal emojis
-// Add Gifs !
 // Add ascii texts images or something
 // Recently used appear at the top
 

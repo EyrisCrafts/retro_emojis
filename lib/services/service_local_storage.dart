@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ServiceLocalStorage {
   Future<void> saveEmojis(List<ModelEmoji> emoji) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList("emojis", emoji.map((e) => e.toJson()).toList());
+    prefs.setStringList("emojis", emoji.take(25).map((e) => e.toJson()).toList());
   }
 
   Future<List<ModelEmoji>> getEmojis() async {

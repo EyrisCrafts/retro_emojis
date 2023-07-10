@@ -1,7 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:retro_typer/search_bar/widget_search.dart';
+import 'package:retro_typer/service_locator.dart';
+import 'package:retro_typer/services/service_local_storage.dart';
 import 'package:window_manager/window_manager.dart';
 
 const double searchBarSize = 76;
@@ -15,7 +16,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await windowManager.ensureInitialized();
-  // Platform.isWindows;
   WindowOptions windowOptions =
       const WindowOptions(size: Size(600, 76), center: true, backgroundColor: Colors.transparent, skipTaskbar: true, titleBarStyle: TitleBarStyle.hidden, windowButtonVisibility: false);
 
@@ -24,9 +24,12 @@ void main() async {
     await windowManager.setAsFrameless();
     await windowManager.show();
     await windowManager.focus();
-    final size = await windowManager.getSize();
-    log("Size after running: $size");
+    if ((await GetIt.I<ServiceLocalStorage>().getEmojis()).isNotEmpty) {
+      windowManager.setSize(const Size(600, searchBarSize + 464));
+    }
   });
+
+  setupServiceLocator();
 
   runApp(const MyApp());
 }

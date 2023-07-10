@@ -6,10 +6,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:emojis/emoji.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:get_it/get_it.dart';
 import 'package:pasteboard/pasteboard.dart';
 import 'package:retro_typer/enums.dart';
 import 'package:retro_typer/main.dart';
 import 'package:retro_typer/models/model_emoji.dart';
+import 'package:retro_typer/services/service_local_storage.dart';
 import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 
 import 'package:flutter/material.dart';
@@ -35,6 +37,8 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
   List<ModelEmoji> allAsciiEmojis = [];
   List<ModelEmoji> allNormalEmojis = Emoji.all().map((e) => ModelEmoji(emoji: e.char, shortName: e.shortName, searchType: SearchType.emojis)).toList();
 
+  List<ModelEmoji> previouslyUsedEmojis = [];
+
   int selectedIndex = 0;
   FocusNode focusNode = FocusNode();
   ScrollController scrollController = ScrollController();
@@ -53,7 +57,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
     if (state.name == "inactive" && inactiveTimes > 1) {
       log("Lost focus. Closing");
 
-      exit(0);
+      // exit(0);
     }
   }
 
@@ -72,6 +76,15 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
     loadEmojis();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       focusNode.requestFocus();
+    });
+
+    GetIt.I<ServiceLocalStorage>().getEmojis().then((value) {
+      previouslyUsedEmojis = value;
+      searchResults = previouslyUsedEmojis.toList();
+      if (value.isNotEmpty) {
+        _gridUpdate.value = !_gridUpdate.value;
+        updateWindowSizeForImages();
+      }
     });
   }
 
@@ -110,17 +123,32 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
     // Parse the loaded string as JSON
     final jsonData = jsonDecode(jsonString);
     allAsciiEmojis = (jsonData["retro_emojis"] as List).map((e) => ModelEmoji(searchType: SearchType.ascii, emoji: e["phrase"], shortName: e["shortcut"])).toList();
+  }
 
-    // Load emojis
+  void saveToLocal(ModelEmoji emoji) {
+    // GetIt.I<ServiceLocalStorage>().saveEmojis([]);
+    // return;
+    if (!previouslyUsedEmojis.contains(emoji)) {
+      previouslyUsedEmojis.insert(0, emoji);
+      GetIt.I<ServiceLocalStorage>().saveEmojis(previouslyUsedEmojis);
+    } else {
+      // TODO Update index of that emoji to first
+      final index = previouslyUsedEmojis.indexOf(emoji);
+      previouslyUsedEmojis.removeAt(index);
+      previouslyUsedEmojis.insert(0, emoji);
+      GetIt.I<ServiceLocalStorage>().saveEmojis(previouslyUsedEmojis);
+    }
   }
 
   void saveToClipboard() async {
+    saveToLocal(searchResults[selectedIndex]);
     try {
       switch (searchType.value) {
         case SearchType.ascii:
         case SearchType.emojis:
           final emoji = searchResults[selectedIndex];
           await Clipboard.setData(ClipboardData(text: emoji.emoji));
+
         case SearchType.gif:
         case SearchType.image:
           final memeUrl = searchResults[selectedIndex].memeUrl;
@@ -199,6 +227,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
   }
 
   void updateWindowSizeForImages() {
+    log("Updating window size");
     windowManager.setSize(const Size(600, searchBarSize + 464));
   }
 
@@ -336,6 +365,11 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
                 onChanged: (value) {
                   hasFirstSearchHappened = true;
                   searchText = value;
+                  if (searchText.isEmpty) {
+                    searchResults = previouslyUsedEmojis.toList();
+                    _gridUpdate.value = !_gridUpdate.value;
+                    return;
+                  }
                   if (searchType.value == SearchType.image) {
                     startTimer();
                   } else if (searchType.value == SearchType.gif) {

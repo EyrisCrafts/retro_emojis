@@ -53,7 +53,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
     if (state.name == "inactive" && inactiveTimes > 1) {
       log("Lost focus. Closing");
 
-      // exit(0);
+      exit(0);
     }
   }
 
@@ -122,13 +122,10 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
   }
 
   void saveToLocal(ModelEmoji emoji) {
-    // GetIt.I<ServiceLocalStorage>().saveEmojis([]);
-    // return;
     if (!previouslyUsedEmojis.contains(emoji)) {
       previouslyUsedEmojis.insert(0, emoji);
       GetIt.I<ServiceLocalStorage>().saveEmojis(previouslyUsedEmojis);
     } else {
-      // TODO Update index of that emoji to first
       final index = previouslyUsedEmojis.indexOf(emoji);
       previouslyUsedEmojis.removeAt(index);
       previouslyUsedEmojis.insert(0, emoji);

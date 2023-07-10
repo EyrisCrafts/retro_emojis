@@ -9,6 +9,7 @@
 .history
 .svn/
 migrate_working_dir/
+dmg_creator/retro_typer.dmg
 
 # IntelliJ related
 *.iml

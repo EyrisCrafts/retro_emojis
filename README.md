@@ -60,7 +60,7 @@ cd retro_typer/dmg_creator/
 
 Finally we build the dmg
 ```
-appdmg ./config.json ./mydmg.dmg
+appdmg ./config.json ./retro_typer.dmg
 ```
 
 

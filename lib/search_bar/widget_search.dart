@@ -461,7 +461,8 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
                                               fit: FlexFit.tight,
                                               child: Text(emoji,
                                                   style: TextStyle(
-                                                      color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.7), fontSize: searchType.value == SearchType.emojis ? 30 : 12)),
+                                                      color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.7),
+                                                      fontSize: searchResults[index].searchType == SearchType.emojis ? 30 : 16)),
                                             ),
                                           ],
                                         ),

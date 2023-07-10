@@ -19,10 +19,6 @@ import 'package:flutter/services.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:http/http.dart' as http;
 
-// TODO Features needed
-// Add ascii texts images or something
-// Recently used appear at the top
-
 class WidgetSearch extends StatefulWidget {
   const WidgetSearch({super.key});
 
@@ -365,6 +361,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
                 onChanged: (value) {
                   hasFirstSearchHappened = true;
                   searchText = value;
+                  selectedIndex = 0;
                   if (searchText.isEmpty) {
                     searchResults = previouslyUsedEmojis.toList();
                     _gridUpdate.value = !_gridUpdate.value;

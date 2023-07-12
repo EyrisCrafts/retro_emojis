@@ -4,10 +4,8 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   bitsdojo_window_linux
-  irondash_engine_context
   pasteboard
   screen_retriever
-  super_native_extensions
   window_manager
 )
 

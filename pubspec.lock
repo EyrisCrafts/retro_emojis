@@ -169,22 +169,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
-  device_info_plus:
-    dependency: transitive
-    description:
-      name: device_info_plus
-      sha256: f52ab3b76b36ede4d135aab80194df8925b553686f0fa12226b4e2d658e45903
-      url: "https://pub.dev"
-    source: hosted
-    version: "8.2.2"
-  device_info_plus_platform_interface:
-    dependency: transitive
-    description:
-      name: device_info_plus_platform_interface
-      sha256: d3b01d5868b50ae571cd1dc6e502fc94d956b665756180f7b16ead09e836fd64
-      url: "https://pub.dev"
-    source: hosted
-    version: "7.0.0"
   emojis:
     dependency: "direct main"
     description:
@@ -296,22 +280,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.17"
-  irondash_engine_context:
-    dependency: transitive
-    description:
-      name: irondash_engine_context
-      sha256: "086fbbcaef07b821b304b0371e472c687715f326219b69b18dc5c962dab09b55"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.1"
-  irondash_message_channel:
-    dependency: transitive
-    description:
-      name: irondash_message_channel
-      sha256: "081ff9631a2c6782a47ef4fdf9c97206053af1bb174e2a25851692b04f3bc126"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.1"
   js:
     dependency: transitive
     description:
@@ -440,14 +408,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.0"
-  pixel_snap:
-    dependency: transitive
-    description:
-      name: pixel_snap
-      sha256: "5de3662b926c9bc189578cf90f9d5b350ee61bc8e20e8a91fa1dfdd26c9f5ece"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.2"
   platform:
     dependency: transitive
     description:
@@ -613,22 +573,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  super_clipboard:
-    dependency: "direct main"
-    description:
-      name: super_clipboard
-      sha256: "22bdd30594e707a46b981f60b76c6234bc342bc0746f408e079e6285aae7075a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.0"
-  super_native_extensions:
-    dependency: transitive
-    description:
-      name: super_native_extensions
-      sha256: bc90991a5f90b58fa0e5c9c3ec73684e31c042e7ca0de4e05c7b1388cae1c7da
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.0"
   synchronized:
     dependency: transitive
     description:

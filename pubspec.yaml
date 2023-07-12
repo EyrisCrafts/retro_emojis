@@ -42,7 +42,6 @@ dependencies:
   http: ^1.1.0
   cached_network_image: ^3.2.3
   visibility_detector: ^0.4.0+2
-  super_clipboard: ^0.4.0
   flutter_cache_manager: ^3.3.1
   pasteboard: ^0.2.0
   emojis: ^0.9.9

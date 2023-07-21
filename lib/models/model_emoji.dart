@@ -6,13 +6,13 @@ import 'package:retro_typer/enums.dart';
 class ModelEmoji {
   String emoji;
   String shortName;
-  SearchType searchType;
+  EnumSearchType searchType;
   String memeUrl;
 
   ModelEmoji({
     this.emoji = "",
     this.shortName = "",
-    this.searchType = SearchType.emojis,
+    this.searchType = EnumSearchType.emojis,
     this.memeUrl = "",
   });
 
@@ -29,7 +29,7 @@ class ModelEmoji {
     return ModelEmoji(
       emoji: (map['emoji'] ?? '') as String,
       shortName: (map['shortName'] ?? '') as String,
-      searchType: SearchType.values.firstWhere((element) => element.name == (map['searchType'] ?? '') as String),
+      searchType: EnumSearchType.values.firstWhere((element) => element.name == (map['searchType'] ?? '') as String),
       memeUrl: (map['memeUrl'] ?? '') as String,
     );
   }

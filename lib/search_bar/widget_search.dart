@@ -8,10 +8,12 @@ import 'package:emojis/emoji.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pasteboard/pasteboard.dart';
+import 'package:quantity_input/quantity_input.dart';
 import 'package:retro_typer/enums.dart';
 import 'package:retro_typer/main.dart';
 import 'package:retro_typer/models/model_emoji.dart';
 import 'package:retro_typer/services/service_local_storage.dart';
+import 'package:retro_typer/services/service_user_preferences.dart';
 import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 
 import 'package:flutter/material.dart';
@@ -27,22 +29,24 @@ class WidgetSearch extends StatefulWidget {
 }
 
 class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver {
-  static const maxResultsAtOnce = 25;
+  int maxResultsAtOnce = 25;
+  int inactiveTimes = 0;
+  int selectedIndex = 0;
+
+  double itemHeight = 116;
+  GlobalKey itemKey = GlobalKey();
 
   List<ModelEmoji> searchResults = [];
   List<ModelEmoji> allAsciiEmojis = [];
-  List<ModelEmoji> allNormalEmojis = Emoji.all().map((e) => ModelEmoji(emoji: e.char, shortName: e.shortName, searchType: SearchType.emojis)).toList();
-
+  List<ModelEmoji> allNormalEmojis = Emoji.all().map((e) => ModelEmoji(emoji: e.char, shortName: e.shortName, searchType: EnumSearchType.emojis)).toList();
   List<ModelEmoji> previouslyUsedEmojis = [];
 
-  int selectedIndex = 0;
   FocusNode focusNode = FocusNode();
   ScrollController scrollController = ScrollController();
-  int inactiveTimes = 0;
 
   String searchText = "";
 
-  ValueNotifier<SearchType> searchType = ValueNotifier(SearchType.ascii);
+  ValueNotifier<EnumSearchType> searchType = ValueNotifier(EnumSearchType.ascii);
   final ValueNotifier<bool> _gridUpdate = ValueNotifier(false);
 
   @override
@@ -52,18 +56,27 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
     }
     if (state.name == "inactive" && inactiveTimes > 1) {
       log("Lost focus. Closing");
-
-      exit(0);
+      // exit(0);
     }
   }
 
   Timer? timer;
   int millsecondsSoFar = 0;
   bool hasFirstSearchHappened = false;
+  final ValueNotifier<bool> _isInSettings = ValueNotifier(false);
+  int gridCrossAxisCount = 5;
+
+  List<EnumSearchType> enabledSearchTypes = [];
 
   @override
   void initState() {
     super.initState();
+
+    gridCrossAxisCount = GetIt.I<ServiceUserPreferences>().gridCrossAxisCount;
+    maxResultsAtOnce = GetIt.I<ServiceUserPreferences>().maxMemesLoad;
+    enabledSearchTypes = GetIt.I<ServiceUserPreferences>().enabledTypes;
+    searchType.value = enabledSearchTypes.first;
+    log("init state enabled search types: $enabledSearchTypes");
 
     log("Linit state");
     WidgetsBinding.instance.addObserver(this);
@@ -90,14 +103,13 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
     }
     timer = Timer.periodic(const Duration(milliseconds: 400), (timer) {
       millsecondsSoFar += 400;
-      log("Timer: $millsecondsSoFar $searchText ${searchType.value}");
-      if (millsecondsSoFar > 1300 && searchType.value == SearchType.image && searchText.isNotEmpty) {
+      if (millsecondsSoFar > 1300 && searchType.value == EnumSearchType.image && searchText.isNotEmpty) {
         millsecondsSoFar = 0;
         timer.cancel();
         findMeme();
       }
 
-      if (millsecondsSoFar > 1300 && searchType.value == SearchType.gif && searchText.isNotEmpty) {
+      if (millsecondsSoFar > 1300 && searchType.value == EnumSearchType.gif && searchText.isNotEmpty) {
         millsecondsSoFar = 0;
         timer.cancel();
         findGif();
@@ -118,7 +130,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
 
     // Parse the loaded string as JSON
     final jsonData = jsonDecode(jsonString);
-    allAsciiEmojis = (jsonData["retro_emojis"] as List).map((e) => ModelEmoji(searchType: SearchType.ascii, emoji: e["phrase"], shortName: e["shortcut"])).toList();
+    allAsciiEmojis = (jsonData["retro_emojis"] as List).map((e) => ModelEmoji(searchType: EnumSearchType.ascii, emoji: e["phrase"], shortName: e["shortcut"])).toList();
   }
 
   void saveToLocal(ModelEmoji emoji) {
@@ -137,13 +149,13 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
     saveToLocal(searchResults[selectedIndex]);
     try {
       switch (searchType.value) {
-        case SearchType.ascii:
-        case SearchType.emojis:
+        case EnumSearchType.ascii:
+        case EnumSearchType.emojis:
           final emoji = searchResults[selectedIndex];
           await Clipboard.setData(ClipboardData(text: emoji.emoji));
 
-        case SearchType.gif:
-        case SearchType.image:
+        case EnumSearchType.gif:
+        case EnumSearchType.image:
           final memeUrl = searchResults[selectedIndex].memeUrl;
           // Check if available in cache
           var file = await DefaultCacheManager().getSingleFile(memeUrl);
@@ -161,7 +173,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
 
   bool _onKey(KeyEvent event) {
     final key = event.logicalKey.keyLabel;
-
+    log("Key pressed: $key ${enabledSearchTypes.toString()}");
     if (event is KeyDownEvent) {
       if (key == "Enter") {
         // Save to clipboard
@@ -176,31 +188,32 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
         updateSelectedIndex(EnumArrow.right);
       } else if (key == "Escape") {
         exit(0);
-      } else if (key == "1") {
+      } else if (key == (enabledSearchTypes.indexOf(EnumSearchType.ascii) + 1).toString()) {
         searchResults.clear();
         selectedIndex = 0;
-        searchType.value = SearchType.ascii;
+        searchType.value = EnumSearchType.ascii;
         if (searchText.isNotEmpty) {
           findAsciiEmoji();
         }
-      } else if (key == "2") {
+      } else if (key == (enabledSearchTypes.indexOf(EnumSearchType.image) + 1).toString()) {
         selectedIndex = 0;
         searchResults.clear();
-        searchType.value = SearchType.image;
+        searchType.value = EnumSearchType.image;
         if (searchText.isNotEmpty) {
           findMeme();
         }
-      } else if (key == "3") {
+      } else if (key == (enabledSearchTypes.indexOf(EnumSearchType.gif) + 1).toString()) {
         selectedIndex = 0;
         searchResults.clear();
-        searchType.value = SearchType.gif;
+        searchType.value = EnumSearchType.gif;
         if (searchText.isNotEmpty) {
           findGif();
         }
-      } else if (key == "4") {
+      } else if (key == (enabledSearchTypes.indexOf(EnumSearchType.emojis) + 1).toString()) {
+        log("Pressed emojis");
         selectedIndex = 0;
         searchResults.clear();
-        searchType.value = SearchType.emojis;
+        searchType.value = EnumSearchType.emojis;
         if (searchText.isNotEmpty) {
           findEmoji();
         }
@@ -242,7 +255,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
     }
     int length = searchResults.length;
 
-    if (searchType.value == SearchType.ascii) {
+    if (searchType.value == EnumSearchType.ascii) {
       if (delta < length && delta >= 0) {
         selectedIndex = delta;
         _gridUpdate.value = !_gridUpdate.value;
@@ -262,10 +275,10 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
     final scrollOffset = scrollController.offset;
     // selected Item index in viewport
     final itemsOutsideViewport = (scrollOffset / itemHeight).floor();
-    final indexInViewport = ((selectedIndex ~/ 5) - itemsOutsideViewport);
+    final indexInViewport = ((selectedIndex ~/ gridCrossAxisCount) - itemsOutsideViewport);
 
-    if (indexInViewport >= 4 && !goingUp) {
-      final double newoffset = ((selectedIndex ~/ 5) - 3) * itemHeight;
+    if (indexInViewport >= (gridCrossAxisCount - 1) && !goingUp) {
+      final double newoffset = ((selectedIndex ~/ gridCrossAxisCount) - (gridCrossAxisCount - 2)) * itemHeight;
       scrollController.animateTo(newoffset, duration: const Duration(milliseconds: 100), curve: Curves.easeIn);
     } else if (indexInViewport == 0 && goingUp) {
       scrollController.animateTo(scrollOffset - itemHeight, duration: const Duration(milliseconds: 100), curve: Curves.easeIn);
@@ -282,7 +295,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
         final data = json["results"] as List<dynamic>;
         for (final result in data) {
           try {
-            searchResults.add(ModelEmoji(memeUrl: result["media"].first["mp4"]["preview"], searchType: SearchType.image));
+            searchResults.add(ModelEmoji(memeUrl: result["media"].first["mp4"]["preview"], searchType: EnumSearchType.image));
           } catch (e) {
             log("Error parsing meme: $e");
           }
@@ -305,7 +318,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
         final data = json["results"] as List<dynamic>;
         for (final result in data) {
           try {
-            searchResults.add(ModelEmoji(memeUrl: result["media"].first["mediumgif"]["url"], searchType: SearchType.gif));
+            searchResults.add(ModelEmoji(memeUrl: result["media"].first["mediumgif"]["url"], searchType: EnumSearchType.gif));
           } catch (e) {
             log("Error parsing meme: $e");
           }
@@ -345,147 +358,248 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
         ],
       ),
       body: LayoutBuilder(builder: (context, constraints) {
-        return Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10),
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(hintStyle: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5)), hintText: "Search", border: InputBorder.none),
-                focusNode: focusNode,
-                cursorColor: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5),
-                style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.9)),
-                inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r"\d"))],
-                onChanged: (value) {
-                  hasFirstSearchHappened = true;
-                  searchText = value;
-                  selectedIndex = 0;
-                  if (searchText.isEmpty) {
-                    searchResults = previouslyUsedEmojis.toList();
-                    _gridUpdate.value = !_gridUpdate.value;
-                    return;
-                  }
-                  if (searchType.value == SearchType.image) {
-                    startTimer();
-                  } else if (searchType.value == SearchType.gif) {
-                    startTimer();
-                  } else if (searchType.value == SearchType.ascii) {
-                    findAsciiEmoji();
-                  } else if (searchType.value == SearchType.emojis) {
-                    findEmoji();
-                  }
-                },
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  WidgetSearchTypeButton(
-                    isDarkMode: isDarkMode,
-                    shortcut: "(1)",
-                    name: "  Ascii",
-                  ),
-                  WidgetSearchTypeButton(
-                    isDarkMode: isDarkMode,
-                    shortcut: "(2)",
-                    name: "  Images",
-                  ),
-                  WidgetSearchTypeButton(
-                    isDarkMode: isDarkMode,
-                    shortcut: "(3)",
-                    name: "  Gifs",
-                  ),
-                  WidgetSearchTypeButton(
-                    isDarkMode: isDarkMode,
-                    shortcut: "(4)",
-                    name: "  Emojis",
-                  ),
-                ],
-              ),
-              if (searchResults.isNotEmpty)
-                Container(
-                  height: 1,
-                  margin: const EdgeInsets.only(bottom: 2),
-                  width: double.maxFinite,
-                  color: Colors.grey.withOpacity(0.5),
-                ),
-              Expanded(
-                  child: ValueListenableBuilder(
-                      valueListenable: searchType,
-                      builder: (context, SearchType value, child) {
-                        return ValueListenableBuilder(
-                            valueListenable: _gridUpdate,
-                            builder: (context, _, __) {
-                              if (searchResults.isEmpty && hasFirstSearchHappened) {
-                                return Center(
-                                  child: Text(
-                                    "Search : )",
-                                    style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5)),
-                                  ),
-                                );
+        return ValueListenableBuilder(
+            valueListenable: _isInSettings,
+            builder: (context, isInSettings, __) {
+              final filteredSearchTypes = enabledSearchTypes;
+              log("Filtered search types: $filteredSearchTypes");
+              return Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            enabled: !isInSettings,
+                            decoration:
+                                InputDecoration(hintStyle: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5)), hintText: "Search", border: InputBorder.none),
+                            focusNode: focusNode,
+                            cursorColor: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5),
+                            style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.9)),
+                            inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r"\d"))],
+                            onChanged: (value) {
+                              hasFirstSearchHappened = true;
+                              searchText = value;
+                              selectedIndex = 0;
+                              if (searchText.isEmpty) {
+                                searchResults = previouslyUsedEmojis.toList();
+                                _gridUpdate.value = !_gridUpdate.value;
+                                return;
                               }
-                              return GridView(
-                                  controller: scrollController,
-                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: gridCrossAxisCount, childAspectRatio: 1),
-                                  children: List.generate(searchResults.length, (index) {
-                                    final item = searchResults[index];
-                                    Widget child;
-                                    if (item.searchType == SearchType.ascii || item.searchType == SearchType.emojis) {
-                                      String shortName = searchResults[index].shortName.replaceAll("_", " ");
-                                      String emoji = searchResults[index].emoji;
-                                      child = Container(
-                                        alignment: Alignment.center,
-                                        child: Column(
-                                          children: [
-                                            Flexible(
-                                              flex: 2,
-                                              fit: FlexFit.tight,
-                                              child: Container(
-                                                alignment: Alignment.center,
-                                                width: double.maxFinite,
-                                                child: AutoSizeText(
-                                                  shortName,
-                                                  textAlign: TextAlign.center,
-                                                  maxLines: 2,
-                                                  style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.7)),
-                                                ),
-                                              ),
-                                            ),
-                                            Flexible(
-                                              flex: 3,
-                                              fit: FlexFit.tight,
-                                              child: Text(emoji,
-                                                  style: TextStyle(
-                                                      color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.7),
-                                                      fontSize: searchResults[index].searchType == SearchType.emojis ? 30 : 16)),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    } else {
-                                      child = CachedNetworkImage(
-                                        imageUrl: item.memeUrl,
-                                        fit: BoxFit.cover,
-                                        placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                                      );
-                                    }
+                              if (searchType.value == EnumSearchType.image) {
+                                startTimer();
+                              } else if (searchType.value == EnumSearchType.gif) {
+                                startTimer();
+                              } else if (searchType.value == EnumSearchType.ascii) {
+                                findAsciiEmoji();
+                              } else if (searchType.value == EnumSearchType.emojis) {
+                                findEmoji();
+                              }
+                            },
+                          ),
+                        ),
+                        IconButton(
+                          icon: ValueListenableBuilder(
+                              valueListenable: _isInSettings,
+                              builder: (context, isInSettings, _) {
+                                return Icon(isInSettings ? Icons.clear : Icons.settings);
+                              }),
+                          onPressed: () {
+                            log("Pressed settings");
+                            _isInSettings.value = !_isInSettings.value;
+                            Future.delayed(const Duration(milliseconds: 100), () {
+                              if (!_isInSettings.value) {
+                                final tmpHeight = (itemKey.currentContext?.findRenderObject()?.paintBounds.size.width ?? 0);
+                                if (tmpHeight != 0) {
+                                  itemHeight = tmpHeight / gridCrossAxisCount;
+                                }
 
-                                    return Container(
-                                      padding: const EdgeInsets.all(5),
-                                      decoration: selectedIndex == index
-                                          ? BoxDecoration(
-                                              color: (item.searchType == SearchType.image || item.searchType == SearchType.gif) ? Colors.white.withOpacity(0.6) : Colors.blue.withOpacity(0.2),
-                                              borderRadius: BorderRadius.circular(10),
-                                            )
-                                          : null,
-                                      child: child,
-                                    );
-                                  }));
+                                focusNode.requestFocus();
+
+                                log("Item height is $itemHeight");
+                              }
                             });
-                      }))
-            ],
-          ),
-        );
+                            updateWindowSizeForImages();
+                          },
+                        ),
+                      ],
+                    ),
+                    if (!isInSettings)
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          for (int i = 0; i < filteredSearchTypes.length; i++)
+                            WidgetSearchTypeButton(
+                              isDarkMode: isDarkMode,
+                              shortcut: "(${i + 1})",
+                              name: "  ${filteredSearchTypes[i].name}",
+                            ),
+                        ],
+                      ),
+                    if (searchResults.isNotEmpty)
+                      Container(
+                        height: 1,
+                        margin: const EdgeInsets.only(bottom: 2),
+                        width: double.maxFinite,
+                        color: Colors.grey.withOpacity(0.5),
+                      ),
+                    if (isInSettings)
+                      Column(
+                        children: [
+                          ListTile(
+                              title: Text("Grid cross count", style: TextStyle(color: Colors.white.withOpacity(0.5))),
+                              trailing: ValueListenableBuilder<bool>(
+                                  valueListenable: _gridUpdate,
+                                  builder: (context, _, __) {
+                                    return QuantityInput(
+                                      maxValue: 10,
+                                      minValue: 3,
+                                      buttonColor: Colors.white.withOpacity(0.5),
+                                      value: gridCrossAxisCount,
+                                      onChanged: (value) {
+                                        gridCrossAxisCount = int.tryParse(value) ?? 5;
+                                        // Save to shared preferences
+                                        GetIt.I<ServiceLocalStorage>().saveGridCrossAxisCount(gridCrossAxisCount);
+                                        _gridUpdate.value = !_gridUpdate.value;
+                                      },
+                                    );
+                                  })),
+                          ListTile(
+                              title: Text("Max memes", style: TextStyle(color: Colors.white.withOpacity(0.5))),
+                              trailing: ValueListenableBuilder<bool>(
+                                  valueListenable: _gridUpdate,
+                                  builder: (context, __, _) {
+                                    return QuantityInput(
+                                      maxValue: 50,
+                                      buttonColor: Colors.white.withOpacity(0.5),
+                                      minValue: 3,
+                                      value: maxResultsAtOnce,
+                                      onChanged: (value) {
+                                        maxResultsAtOnce = int.tryParse(value) ?? 5;
+                                        // Save to shared preferences
+                                        GetIt.I<ServiceLocalStorage>().saveMaxMemesLoad(maxResultsAtOnce);
+                                        _gridUpdate.value = !_gridUpdate.value;
+                                      },
+                                    );
+                                  })),
+                          for (EnumSearchType type in EnumSearchType.values)
+                            ValueListenableBuilder<bool>(
+                                valueListenable: _gridUpdate,
+                                builder: (context, _, __) {
+                                  return SwitchListTile(
+                                    title: Text(type.name, style: TextStyle(color: Colors.white.withOpacity(0.5))),
+                                    value: enabledSearchTypes.contains(type),
+                                    onChanged: (value) {
+                                      if (value) {
+                                        enabledSearchTypes.add(type);
+                                      } else {
+                                        if (enabledSearchTypes.length == 1) {
+                                          return;
+                                        }
+                                        enabledSearchTypes.remove(type);
+                                      }
+                                      GetIt.I<ServiceUserPreferences>().enabledTypes = enabledSearchTypes;
+                                      // Save to shared preferences
+                                      GetIt.I<ServiceLocalStorage>().saveEnabledTypes(enabledSearchTypes.map((e) => e.name).toList());
+                                      _gridUpdate.value = !_gridUpdate.value;
+                                    },
+                                  );
+                                }),
+                          ElevatedButton(
+                              onPressed: () {
+                                previouslyUsedEmojis.clear();
+                                searchResults.clear();
+                                GetIt.I<ServiceLocalStorage>().saveEmojis(previouslyUsedEmojis);
+                              },
+                              child: Text("Clear used emojis", style: TextStyle(color: Colors.black))),
+                        ],
+                      ),
+                    if (!isInSettings)
+                      Expanded(
+                          child: ValueListenableBuilder<EnumSearchType>(
+                              valueListenable: searchType,
+                              builder: (context, EnumSearchType value, child) {
+                                return ValueListenableBuilder(
+                                    valueListenable: _gridUpdate,
+                                    builder: (context, _, __) {
+                                      if (searchResults.isEmpty && hasFirstSearchHappened) {
+                                        return Center(
+                                          child: Text(
+                                            "Search : )",
+                                            style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5)),
+                                          ),
+                                        );
+                                      }
+                                      return GridView(
+                                          key: itemKey,
+                                          controller: scrollController,
+                                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: gridCrossAxisCount, childAspectRatio: 1),
+                                          children: List.generate(searchResults.length, (index) {
+                                            final item = searchResults[index];
+
+                                            Widget child;
+                                            if (item.searchType == EnumSearchType.ascii || item.searchType == EnumSearchType.emojis) {
+                                              String shortName = searchResults[index].shortName.replaceAll("_", " ");
+                                              String emoji = searchResults[index].emoji;
+                                              child = Container(
+                                                alignment: Alignment.center,
+                                                child: Column(
+                                                  children: [
+                                                    Flexible(
+                                                      flex: 2,
+                                                      fit: FlexFit.tight,
+                                                      child: Container(
+                                                        alignment: Alignment.center,
+                                                        width: double.maxFinite,
+                                                        child: AutoSizeText(
+                                                          shortName,
+                                                          textAlign: TextAlign.center,
+                                                          maxLines: 2,
+                                                          style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.7)),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Flexible(
+                                                      flex: 3,
+                                                      fit: FlexFit.tight,
+                                                      child: Text(emoji,
+                                                          style: TextStyle(
+                                                              color: isDarkMode ? Colors.white.withOpacity(0.7) : Colors.black.withOpacity(0.7),
+                                                              fontSize: searchResults[index].searchType == EnumSearchType.emojis ? 30 : 16)),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            } else {
+                                              child = CachedNetworkImage(
+                                                imageUrl: item.memeUrl,
+                                                fit: BoxFit.cover,
+                                                placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                                                errorWidget: (context, url, error) => const Icon(Icons.error),
+                                              );
+                                            }
+
+                                            return Container(
+                                              padding: const EdgeInsets.all(5),
+                                              decoration: selectedIndex == index
+                                                  ? BoxDecoration(
+                                                      color: (item.searchType == EnumSearchType.image || item.searchType == EnumSearchType.gif)
+                                                          ? Colors.white.withOpacity(0.6)
+                                                          : Colors.blue.withOpacity(0.2),
+                                                      borderRadius: BorderRadius.circular(10),
+                                                    )
+                                                  : null,
+                                              child: child,
+                                            );
+                                          }));
+                                    });
+                              }))
+                  ],
+                ),
+              );
+            });
       }),
     );
   }

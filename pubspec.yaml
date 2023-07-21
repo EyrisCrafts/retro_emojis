@@ -48,6 +48,7 @@ dependencies:
   auto_size_text: ^3.0.0
   shared_preferences: ^2.2.0
   get_it: ^7.6.0
+  quantity_input: ^1.0.2
 
 dev_dependencies:
   flutter_test:

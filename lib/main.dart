@@ -3,11 +3,11 @@ import 'package:get_it/get_it.dart';
 import 'package:retro_typer/search_bar/widget_search.dart';
 import 'package:retro_typer/service_locator.dart';
 import 'package:retro_typer/services/service_local_storage.dart';
+import 'package:retro_typer/services/service_user_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 
 const double searchBarSize = 76;
-const int gridCrossAxisCount = 5;
-const double itemHeight = 116;
+
 // Acceiblity apis needed.
 // Write where cursor is
 // Find cursor position
@@ -30,6 +30,8 @@ void main() async {
   });
 
   setupServiceLocator();
+
+  await GetIt.I<ServiceUserPreferences>().init();
 
   runApp(const MyApp());
 }

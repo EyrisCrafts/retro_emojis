@@ -1,8 +1,8 @@
 # retro_typer
 
-A simple emoji finder
+A simple emoji/memes finder
 
-## Installation for macos
+# Installation for macos
 
 1. Download retro_typer.dmg from [Releases](https://github.com/K-Rafiki/retro_emojis/releases/tag/v1.0)
 2. Double click and install the .dmg file
@@ -16,7 +16,7 @@ A simple emoji finder
 6. Click "Add Keyboard Shortcut" and add your shortcut key combination, you can press shift + option + e
 6. And you're done ! Just press the shortcut anywhere.
 
-## Installation for windows
+# Installation for windows
 
 1. Download windows.zip from [Releases](https://github.com/K-Rafiki/retro_emojis/releases/tag/v1.0)
 2. extract the zip file
@@ -27,7 +27,7 @@ A simple emoji finder
 2. click on the 'Shortcut Key' and setup a key like Ctrl + Alt + 1
 
 
-## Build your own dmg
+# Build your own dmg
 
 If you want to build your own dmg instead of the releases, you can follow this [article](https://retroportalstudio.medium.com/creating-dmg-file-for-flutter-macos-apps-e448ff1cb0f). I'll mention the steps here regardless.
 You need to have flutter installed.
@@ -65,6 +65,7 @@ appdmg ./config.json ./retro_typer.dmg
 - [X] Add normal emojis
 - [X] Add Gifs
 - [X] Recently used appear at the top
+- [] Add settings for configuration
 
 
 ## Contributions

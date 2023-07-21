@@ -48,15 +48,9 @@ Run the following command in your terminal. Make sure you have npm installed.
 npm install -g appdmg
 ```
 
-Change directory to dmg_creator folder inside retro_typer
-
-```
-cd retro_typer/dmg_creator/
-```
-
 Finally we build the dmg
 ```
-appdmg ./config.json ./retro_typer.dmg
+appdmg ./dmg_creator/config.json ./dmg_creator/retro_typer.dmg
 ```
 
 
@@ -65,7 +59,7 @@ appdmg ./config.json ./retro_typer.dmg
 - [X] Add normal emojis
 - [X] Add Gifs
 - [X] Recently used appear at the top
-- [] Add settings for configuration
+- [X] Add settings for configuration
 
 
 ## Contributions

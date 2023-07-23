@@ -34,6 +34,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
   int selectedIndex = 0;
 
   double itemHeight = 116;
+  double gridviewResidueHeight = 116;
   GlobalKey itemKey = GlobalKey();
 
   List<ModelEmoji> searchResults = [];
@@ -179,8 +180,10 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
         // Save to clipboard
         saveToClipboard();
       } else if (key == "Arrow Down") {
+        updateItemHeight();
         updateSelectedIndex(EnumArrow.down);
       } else if (key == "Arrow Up") {
+        updateItemHeight();
         updateSelectedIndex(EnumArrow.up);
       } else if (key == "Arrow Left") {
         updateSelectedIndex(EnumArrow.left);
@@ -278,7 +281,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
     final indexInViewport = ((selectedIndex ~/ gridCrossAxisCount) - itemsOutsideViewport);
 
     if (indexInViewport >= (gridCrossAxisCount - 1) && !goingUp) {
-      final double newoffset = ((selectedIndex ~/ gridCrossAxisCount) - (gridCrossAxisCount - 2)) * itemHeight;
+      final double newoffset = (((selectedIndex ~/ gridCrossAxisCount) - (gridCrossAxisCount - 2)) * itemHeight) + gridviewResidueHeight;
       scrollController.animateTo(newoffset, duration: const Duration(milliseconds: 100), curve: Curves.easeIn);
     } else if (indexInViewport == 0 && goingUp) {
       scrollController.animateTo(scrollOffset - itemHeight, duration: const Duration(milliseconds: 100), curve: Curves.easeIn);
@@ -342,6 +345,14 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
     searchResults = allNormalEmojis.where((element) => element.shortName.toLowerCase().contains(searchText.toLowerCase())).toList();
     _gridUpdate.value = !_gridUpdate.value;
     updateWindowSizeForImages();
+  }
+
+  void updateItemHeight() {
+    final tmpHeight = (itemKey.currentContext?.findRenderObject()?.paintBounds.size.width ?? 0);
+    if (tmpHeight != 0) {
+      itemHeight = tmpHeight / gridCrossAxisCount;
+      gridviewResidueHeight = tmpHeight % itemHeight;
+    }
   }
 
   @override
@@ -410,10 +421,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
                             _isInSettings.value = !_isInSettings.value;
                             Future.delayed(const Duration(milliseconds: 100), () {
                               if (!_isInSettings.value) {
-                                final tmpHeight = (itemKey.currentContext?.findRenderObject()?.paintBounds.size.width ?? 0);
-                                if (tmpHeight != 0) {
-                                  itemHeight = tmpHeight / gridCrossAxisCount;
-                                }
+                                updateItemHeight();
 
                                 focusNode.requestFocus();
 

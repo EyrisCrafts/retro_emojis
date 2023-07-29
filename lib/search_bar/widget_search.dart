@@ -443,6 +443,37 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
                               isDarkMode: isDarkMode,
                               shortcut: "(${i + 1})",
                               name: "  ${filteredSearchTypes[i].name}",
+                              onTap: () {
+                                if (filteredSearchTypes[i] == EnumSearchType.ascii) {
+                                  searchResults.clear();
+                                  selectedIndex = 0;
+                                  searchType.value = EnumSearchType.ascii;
+                                  if (searchText.isNotEmpty) {
+                                    findAsciiEmoji();
+                                  }
+                                } else if (filteredSearchTypes[i] == EnumSearchType.image) {
+                                  selectedIndex = 0;
+                                  searchResults.clear();
+                                  searchType.value = EnumSearchType.image;
+                                  if (searchText.isNotEmpty) {
+                                    findMeme();
+                                  }
+                                } else if (filteredSearchTypes[i] == EnumSearchType.gif) {
+                                  selectedIndex = 0;
+                                  searchResults.clear();
+                                  searchType.value = EnumSearchType.gif;
+                                  if (searchText.isNotEmpty) {
+                                    findGif();
+                                  }
+                                } else if (filteredSearchTypes[i] == EnumSearchType.emojis) {
+                                  selectedIndex = 0;
+                                  searchResults.clear();
+                                  searchType.value = EnumSearchType.emojis;
+                                  if (searchText.isNotEmpty) {
+                                    findEmoji();
+                                  }
+                                }
+                              },
                             ),
                         ],
                       ),
@@ -619,20 +650,25 @@ class WidgetSearchTypeButton extends StatelessWidget {
     required this.isDarkMode,
     required this.shortcut,
     required this.name,
+    required this.onTap,
   });
 
   final bool isDarkMode;
   final String shortcut;
   final String name;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        children: [
-          Text(shortcut, style: TextStyle(color: Colors.grey.withOpacity(0.5))),
-          Text(name, style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5))),
-        ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Expanded(
+        child: Row(
+          children: [
+            Text(shortcut, style: TextStyle(color: Colors.grey.withOpacity(0.5))),
+            Text(name, style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(0.5) : Colors.black.withOpacity(0.5))),
+          ],
+        ),
       ),
     );
   }

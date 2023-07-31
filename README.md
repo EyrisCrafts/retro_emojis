@@ -31,7 +31,7 @@ A simple emoji/memes finder
 
 # 🔥 Installation for windows
 
-1. Download windows.zip from [Releases](https://github.com/K-Rafiki/retro_emojis/releases/tag/v1.0)
+1. Download windows.zip from [Releases](https://github.com/K-Rafiki/retro_emojis/releases/tag/v4.0)
 2. extract the zip file
 
 #### ⏩ Setup Shortcut to run retro_typer

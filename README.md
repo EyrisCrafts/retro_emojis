@@ -14,7 +14,7 @@ A simple emoji/memes finder
 
 # 🔥 Installation for macos
 
-1. Download retro_typer.dmg from [Releases](https://github.com/K-Rafiki/retro_emojis/releases/tag/v1.0)
+1. Download retro_typer.dmg from [Releases](https://github.com/K-Rafiki/retro_emojis/releases/tag/v4.0)
 2. Double click and install the .dmg file
 
 #### ⏩ Setup Shortcut to run the retro_typer

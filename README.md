@@ -73,7 +73,6 @@ appdmg ./dmg_creator/config.json ./dmg_creator/retro_typer.dmg
 - [X] Add Gifs
 - [X] Recently used appear at the top
 - [X] Add settings for configuration
-- [] Arrow key use
 
 
 ## 🚁 Contributions

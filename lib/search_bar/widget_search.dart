@@ -148,8 +148,12 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
 
   void saveToClipboard() async {
     saveToLocal(searchResults[selectedIndex]);
+    // EnumSearchType enumToLookFor = searchType.value;
+    // if (searchText.isEmpty) {
+    //   enumToLookFor = searchResults[selectedIndex].searchType;
+    // }
     try {
-      switch (searchType.value) {
+      switch (searchResults[selectedIndex].searchType) {
         case EnumSearchType.ascii:
         case EnumSearchType.emojis:
           final emoji = searchResults[selectedIndex];
@@ -660,9 +664,9 @@ class WidgetSearchTypeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Expanded(
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
         child: Row(
           children: [
             Text(shortcut, style: TextStyle(color: Colors.grey.withOpacity(0.5))),

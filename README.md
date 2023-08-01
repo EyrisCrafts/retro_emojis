@@ -4,8 +4,10 @@ A simple emoji/memes finder
 
 # 💻 Screenshots
 
-![alt text](./videos/screenshot2.png)
+![alt text](./videos/retro_typer.gif)
 
+![alt text](./videos/emojis.png)
+![alt text](./videos/ascii.png)
 
 <video width="520" height="300" controls>
   <source src="./videos/screenRecording.mov" type="video/mp4">
@@ -13,6 +15,12 @@ A simple emoji/memes finder
 
 
 # 🔥 Installation for macos
+
+<video width="500" height="300" controls>
+  <source src="/videos/macos_setup.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+
 
 1. Download retro_typer.dmg from [Releases](https://github.com/K-Rafiki/retro_emojis/releases/tag/v4.0)
 2. Double click and install the .dmg file

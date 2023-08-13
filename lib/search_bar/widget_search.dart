@@ -397,6 +397,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
                               hasFirstSearchHappened = true;
                               searchText = value;
                               selectedIndex = 0;
+                              scrollController.jumpTo(0);
                               if (searchText.isEmpty) {
                                 searchResults = previouslyUsedEmojis.toList();
                                 _gridUpdate.value = !_gridUpdate.value;

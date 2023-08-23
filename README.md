@@ -31,7 +31,7 @@ Your browser does not support the video tag.
 3. click on the search bar at the top right corner and type "Open App" for the action. Drag open app to the main area.
 4. Click on the app keyword and find retro_typer
 5. To setup a keyboard shortcut, click the information icon at the top right corner of the shortcuts app.
-6. Click "Add Keyboard Shortcut" and add your shortcut key combination, you can press shift + option + e
+6. Click "Add Keyboard Shortcut" and add your shortcut key combination, you can press shift + option + 1
 6. And you're done ! Just press the shortcut anywhere.
 
 ![alt text](./videos/screenshot.png)

@@ -361,7 +361,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkMode = !(MediaQuery.of(context).platformBrightness == Brightness.dark ? true : false);
+    bool isDarkMode = (MediaQuery.of(context).platformBrightness == Brightness.dark ? true : false);
 
     return ScaffoldGradientBackground(
       gradient: LinearGradient(
@@ -499,14 +499,14 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
                       Column(
                         children: [
                           ListTile(
-                              title: Text("Grid cross count", style: TextStyle(color: Colors.white.withOpacity(0.5))),
+                              title: Text("Grid cross count", style: TextStyle(color: !isDarkMode ? Colors.black : Colors.white.withOpacity(0.5))),
                               trailing: ValueListenableBuilder<bool>(
                                   valueListenable: _gridUpdate,
                                   builder: (context, _, __) {
                                     return QuantityInput(
                                       maxValue: 10,
                                       minValue: 3,
-                                      buttonColor: Colors.white.withOpacity(0.5),
+                                      buttonColor: Colors.deepPurple,
                                       value: gridCrossAxisCount,
                                       onChanged: (value) {
                                         gridCrossAxisCount = int.tryParse(value) ?? 5;
@@ -517,13 +517,13 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
                                     );
                                   })),
                           ListTile(
-                              title: Text("Max memes", style: TextStyle(color: Colors.white.withOpacity(0.5))),
+                              title: Text("Max memes", style: TextStyle(color: !isDarkMode ? Colors.black : Colors.white.withOpacity(0.5))),
                               trailing: ValueListenableBuilder<bool>(
                                   valueListenable: _gridUpdate,
                                   builder: (context, __, _) {
                                     return QuantityInput(
                                       maxValue: 50,
-                                      buttonColor: Colors.white.withOpacity(0.5),
+                                      buttonColor: Colors.deepPurple,
                                       minValue: 3,
                                       value: maxResultsAtOnce,
                                       onChanged: (value) {
@@ -539,7 +539,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
                                 valueListenable: _gridUpdate,
                                 builder: (context, _, __) {
                                   return SwitchListTile(
-                                    title: Text(type.name, style: TextStyle(color: Colors.white.withOpacity(0.5))),
+                                    title: Text(type.name, style: TextStyle(color: !isDarkMode ? Colors.black : Colors.white.withOpacity(0.5))),
                                     value: enabledSearchTypes.contains(type),
                                     onChanged: (value) {
                                       if (value) {
@@ -563,7 +563,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
                                 searchResults.clear();
                                 GetIt.I<ServiceLocalStorage>().saveEmojis(previouslyUsedEmojis);
                               },
-                              child: Text("Clear used emojis", style: TextStyle(color: Colors.black))),
+                              child: const Text("Clear used emojis", style: TextStyle(color: Colors.black))),
                         ],
                       ),
                     if (!isInSettings)
@@ -683,7 +683,7 @@ class WidgetSearchTypeButton extends StatelessWidget {
         onTap: onTap,
         child: Row(
           children: [
-            Text(shortcut, style: TextStyle(color: isActive ? Colors.black :  Colors.grey.withOpacity(0.5))),
+            Text(shortcut, style: TextStyle(color: isActive ? (isDarkMode ? Colors.white : Colors.black) :  Colors.grey.withOpacity(0.5))),
             Text(name, style: TextStyle(color: isDarkMode ? Colors.white.withOpacity(isActive ? 1 : 0.5) : Colors.black.withOpacity( isActive ? 1 : 0.7))),
           ],
         ),

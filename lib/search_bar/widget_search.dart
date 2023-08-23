@@ -57,7 +57,7 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
     }
     if (state.name == "inactive" && inactiveTimes > 1) {
       log("Lost focus. Closing");
-      // exit(0);
+      exit(0);
     }
   }
 

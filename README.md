@@ -9,9 +9,16 @@ A simple emoji/memes finder
 ![alt text](./videos/emojis.png)
 ![alt text](./videos/ascii.png)
 
-<video width="520" height="300" controls>
-  <source src="./videos/screenRecording.mov" type="video/mp4">
+# 🛠️ How to use
+
+<video width="500" height="300" controls>
+  <source src="/videos/use_video.mp4" type="video/mp4">
+Your browser does not support the video tag.
 </video>
+
+- Use arrow keys to choose the meme to use
+- Press number keys on keyboard to choose type 1 for ascii, 2 for gif etc
+- Press enter to choose. The meme/emoji has been copied to clipboard
 
 
 # 🔥 Installation for macos
@@ -73,7 +80,6 @@ Finally we build the dmg
 ```
 appdmg ./dmg_creator/config.json ./dmg_creator/retro_typer.dmg
 ```
-
 
 
 ## 🏗️ TODO

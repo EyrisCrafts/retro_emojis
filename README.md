@@ -96,8 +96,7 @@ Contributions are always welcome ! Send in a PR request, I'll review and merge
 
 ## Known Issues
 
-### Shortcut on macos not working when multiple languages setup
-
+Some shortcuts are already used by the Macos itself. Try out a few combinations and see which ones are available
 This is a known issue. If you have resolved it, you can reach out to me or create a PR with help and I can merge !
 
 

@@ -28,6 +28,16 @@ class WidgetSearch extends StatefulWidget {
   State<WidgetSearch> createState() => _WidgetSearchState();
 }
 
+String sanitizeSearchText(String searchText) {
+  searchText = searchText.trim();
+  if (searchText.isEmpty) {
+    searchText = " ";
+  }
+  searchText = searchText.toLowerCase();
+  searchText = searchText.replaceAll(" ", "_");
+  return searchText;
+}
+
 class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver {
   int maxResultsAtOnce = 25;
   int inactiveTimes = 0;
@@ -340,13 +350,15 @@ class _WidgetSearchState extends State<WidgetSearch> with WidgetsBindingObserver
   }
 
   void findAsciiEmoji() {
-    searchResults = allAsciiEmojis.where((element) => element.shortName.toLowerCase().contains(searchText.toLowerCase())).toList();
+    String searchSanitized = sanitizeSearchText(searchText);
+    searchResults = allAsciiEmojis.where((element) => element.shortName.toLowerCase().contains(searchSanitized)).toList();
     _gridUpdate.value = !_gridUpdate.value;
     updateWindowSizeForImages();
   }
 
   void findEmoji() {
-    searchResults = allNormalEmojis.where((element) => element.shortName.toLowerCase().contains(searchText.toLowerCase())).toList();
+    String searchSanitized = sanitizeSearchText(searchText);
+    searchResults = allNormalEmojis.where((element) => element.shortName.toLowerCase().contains(searchSanitized)).toList();
     _gridUpdate.value = !_gridUpdate.value;
     updateWindowSizeForImages();
   }
